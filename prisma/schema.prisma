@@ -34,6 +34,7 @@ model User {
   logs          HabitLog[]
   rewards       UserReward[]
   badges        UserBadge[]
+  missions      Mission[]
   
   // Relation Sociale (Self-referencing many-to-many pour les amis)
   followedBy    UserFollows[] @relation("following")
@@ -49,6 +50,32 @@ model UserFollows {
   @@id([followerId, followingId]) // Clé composée
 }
 
+// Mission = une chose à faire (aujourd'hui ou à une date donnée) — affichée sur le dashboard
+enum MissionType {
+  HABIT   // Récurrent / habitude
+  GOAL    // Objectif ponctuel
+}
+
+enum MissionStatus {
+  SCHEDULED
+  COMPLETED
+  OVERDUE
+}
+
+model Mission {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  category  String        // ex: Fitness, Learning, Productivity
+  type      MissionType
+  xp        Int
+  dueAt     DateTime      // date + heure d’échéance
+  status    MissionStatus @default(SCHEDULED)
+  createdAt DateTime      @default(now())
+}
+
+// Legacy v1: Habit + HabitLog. Mission is the v2 model for daily tasks on the dashboard.
 enum HabitType {
   DAILY_HABIT    // Récurrent (ex: Boire de l'eau)
   ONE_OFF_TASK   // Unique (ex: Ranger le garage)

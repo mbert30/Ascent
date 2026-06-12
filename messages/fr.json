@@ -104,10 +104,41 @@
         "level": "Niveau",
         "current": "Actuel",
         "next": "Suivant",
-        "xpRequired": "XP requis",
+        "xpRequired": "XP total requis",
         "nextReward": "Récompense du prochain niveau",
         "progress": "Progression",
-        "xpNeeded": "{xp} XP nécessaires"
+        "xpNeeded": "{xp} XP nécessaires",
+        "xpRemaining": "{xp} XP restants pour atteindre le niveau {level}",
+        "xpRequiredTotal": "Le niveau {level} demande {xp} XP au total",
+        "maxLevel": "Niveau max atteint !",
+        "levelUp": {
+          "title": "Niveau supérieur !",
+          "level": "Niveau {level}",
+          "rewardGold": "+{gold} or",
+          "avatarsUnlocked": "Nouveaux avatars débloqués !"
+        },
+        "rewards": {
+          "1": "Premiers pas",
+          "2": "Bien lancé",
+          "3": "Tu prends le rythme",
+          "4": "Sur la bonne voie",
+          "5": "Progrès solides",
+          "6": "Cap de la moitié",
+          "7": "Ascension régulière",
+          "8": "Étoile montante",
+          "9": "Tu accélères",
+          "10": "Double chiffres",
+          "11": "Force tranquille",
+          "12": "Maîtrise en cours",
+          "13": "Palier ambitieux",
+          "14": "Focus total",
+          "15": "Niveau confirmé",
+          "16": "Momentum premium",
+          "17": "Régularité exemplaire",
+          "18": "Exécution élite",
+          "19": "Presque au sommet",
+          "20": "Triomphe"
+        }
       },
       "hero": {
         "subtitle": "Vous êtes sur une série de {streak} jours. Continuez l'ascension !",
@@ -142,6 +173,80 @@
           "goal": "Objectif"
         },
         "points": "+{xp} XP"
+      },
+      "missions": {
+        "title": "Missions du jour",
+        "subtitle": "Ce que tu vises faire aujourd'hui",
+        "dayToday": "Aujourd'hui",
+        "dayYesterday": "Hier",
+        "dayTomorrow": "Demain",
+        "missionCount": "{count} missions",
+        "missionCount_one": "{count} mission",
+        "missionCount_other": "{count} missions",
+        "addMission": "Ajouter une mission",
+        "emptyTitle": "Aucune mission aujourd'hui",
+        "emptyDescription": "Ajoute une mission pour commencer et gagner des XP.",
+        "emptyCta": "Ajouter ma première mission",
+        "starterPackCta": "Utiliser le pack de démarrage",
+        "loading": "Chargement des missions…",
+        "dailyQuestTitle": "Quête du jour",
+        "dailyQuestProgress": "{completed}/{target} missions terminées",
+        "weeklyCompleted": "Semaine terminée",
+        "weeklyScheduled": "Semaine planifiée",
+        "weeklyXp": "XP de la semaine",
+        "due": "Échéance",
+        "status": {
+          "scheduled": "Prévu",
+          "overdue": "En retard",
+          "completed": "Terminé"
+        },
+        "type": {
+          "habit": "Habitude",
+          "goal": "Objectif"
+        },
+        "points": "+{xp} XP"
+      },
+      "missionModal": {
+        "newTitle": "Nouvelle mission",
+        "editTitle": "Modifier la mission",
+        "titleLabel": "Titre",
+        "titlePlaceholder": "ex. 30 min de sport",
+        "categoryLabel": "Catégorie",
+        "categoryPlaceholder": "Fitness, Apprentissage, Productivité…",
+        "typeLabel": "Type",
+        "xpLabel": "Récompense XP",
+        "difficultyEasy": "Facile",
+        "difficultyMedium": "Moyen",
+        "difficultyHard": "Difficile",
+        "xpAutoHint": "Récompense auto : {xp} XP",
+        "dueLabel": "Échéance",
+        "dueFriendlyToday": "Aujourd'hui à {time}",
+        "dueFriendlyYesterday": "Hier à {time}",
+        "dueFriendlyTomorrow": "Demain à {time}",
+        "dueFriendlyDate": "{date} à {time}",
+        "duePresetTonight": "Ce soir",
+        "duePresetTomorrowMorning": "Demain matin",
+        "dueDone": "OK",
+        "repeatLabel": "Répétition",
+        "repeatNone": "Aucune",
+        "repeatDaily": "Chaque jour",
+        "repeatWeekly": "Chaque semaine",
+        "repeatHint": "Les prochaines occurrences sont créées automatiquement.",
+        "repeatWeeksUnit": "semaines",
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "delete": "Supprimer",
+        "deleteConfirm": "Supprimer cette mission ?",
+        "complete": "Valider",
+        "uncomplete": "Remettre à faire",
+        "categories": {
+          "Fitness": "Fitness",
+          "Learning": "Apprentissage",
+          "Productivity": "Productivité",
+          "Health": "Santé",
+          "Wellness": "Bien-être",
+          "Career": "Carrière"
+        }
       },
       "progress": {
         "title": "Progression XP",
@@ -232,8 +337,9 @@
     },
     "avatarPicker": {
       "title": "Choisissez votre avatar",
-      "description": "Sélectionnez un avatar prédéfini",
+      "description": "Sélectionnez un avatar prédéfini. Débloquez-en d'autres en montant de niveau.",
       "preview": "Aperçu",
+      "unlockAtLevel": "Débloquer au niveau {level}",
       "actions": {
         "save": "Enregistrer",
         "cancel": "Annuler",
@@ -262,6 +368,91 @@
   },
   "shop": {
     "title": "Boutique",
-    "underConstruction": "En construction"
+    "subtitle": "Dépense ton or dans des récompenses qui te motivent. Voici des idées pour t'inspirer.",
+    "balance": "Ton solde",
+    "goldUnit": "or",
+    "ideasTitle": "Idées de récompenses",
+    "ideasDescription": "Définis tes objectifs et fais-toi plaisir quand tu les atteins.",
+    "costGold": "{cost} or",
+    "redeem": "Débloquer",
+    "notEnoughGold": "Pas assez d'or pour le moment.",
+    "redeemFailed": "Impossible de débloquer la récompense.",
+    "redeemSuccess": "Récompense débloquée : {title}",
+    "customTitle": "Créer ta récompense",
+    "customDescription": "Définis tes propres récompenses et leur prix.",
+    "customTitlePlaceholder": "ex. Sortie café",
+    "create": "Créer",
+    "createFailed": "Impossible de créer la récompense.",
+    "createSuccess": "Récompense créée.",
+    "myRewardsTitle": "Tes récompenses personnalisées",
+    "myRewardsEmpty": "Tu n'as pas encore créé de récompense personnalisée.",
+    "edit": "Modifier",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "updateFailed": "Impossible de modifier la récompense.",
+    "updateSuccess": "Récompense modifiée.",
+    "deleteFailed": "Impossible de supprimer la récompense.",
+    "deleteHasRedemptions": "Impossible de supprimer une récompense déjà utilisée.",
+    "deleteSuccess": "Récompense supprimée.",
+    "historyTitle": "Historique des récompenses",
+    "historyEmpty": "Aucune récompense débloquée pour l'instant.",
+    "categories": {
+      "learning": "Apprentissage",
+      "wellness": "Bien-être",
+      "productivity": "Productivité",
+      "lifestyle": "Lifestyle",
+      "fitness": "Fitness"
+    },
+    "examples": {
+      "book": {
+        "title": "Un dîner gastronomique",
+        "description": "Réserve une vraie bonne table pour célébrer tes efforts"
+      },
+      "spa": {
+        "title": "Week-end city break",
+        "description": "Une nuit dans une ville que tu veux explorer"
+      },
+      "gadget": {
+        "title": "Upgrade setup premium",
+        "description": "Un accessoire haut de gamme qui te fait vraiment plaisir"
+      },
+      "dinner": {
+        "title": "Journée off sans culpabilité",
+        "description": "Une journée entière pour couper et recharger à fond"
+      },
+      "running": {
+        "title": "Sneakers coup de coeur",
+        "description": "La paire que tu regardes depuis des semaines"
+      },
+      "course": {
+        "title": "Billet concert VIP",
+        "description": "Un événement qui te fait vibrer, en version premium"
+      },
+      "massage": {
+        "title": "Massage + spa",
+        "description": "Une vraie parenthèse récupération"
+      },
+      "concert": {
+        "title": "Expérience gastronomique",
+        "description": "Menu dégustation ou adresse signature de ta ville"
+      },
+      "headphones": {
+        "title": "Escapade nature",
+        "description": "Une journée randonnée ou cabane hors réseau"
+      },
+      "weekend": {
+        "title": "Soirée luxe à deux",
+        "description": "Restaurant + activité + souvenirs, sans regarder la note"
+      },
+      "gym": {
+        "title": "Pack sport premium",
+        "description": "Nouveau cours, coach ou équipement pour passer un cap"
+      },
+      "meditation": {
+        "title": "Objet wishlist",
+        "description": "Le gros achat plaisir que tu reportes depuis longtemps"
+      }
+    }
   }
 }

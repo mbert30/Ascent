@@ -14,6 +14,8 @@ export const rewardCreateSchema = rewardBaseSchema.extend({
   creatorId: cuidSchema.optional().nullable(),
 })
 
+export const rewardUpdateSchema = rewardBaseSchema.partial()
+
 export const userRewardCreateSchema = z.object({
   userId: cuidSchema,
   rewardId: cuidSchema,

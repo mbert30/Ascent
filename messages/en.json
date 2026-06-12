@@ -104,10 +104,41 @@
         "level": "Level",
         "current": "Current",
         "next": "Next",
-        "xpRequired": "XP Required",
+        "xpRequired": "Total XP Required",
         "nextReward": "Next level reward",
         "progress": "Progress",
-        "xpNeeded": "{xp} XP needed"
+        "xpNeeded": "{xp} XP needed",
+        "xpRemaining": "{xp} XP remaining to reach level {level}",
+        "xpRequiredTotal": "Level {level} requires {xp} XP total",
+        "maxLevel": "Max level reached!",
+        "levelUp": {
+          "title": "Level up!",
+          "level": "Level {level}",
+          "rewardGold": "+{gold} gold",
+          "avatarsUnlocked": "New avatars unlocked!"
+        },
+        "rewards": {
+          "1": "First steps",
+          "2": "Getting started",
+          "3": "Building momentum",
+          "4": "On track",
+          "5": "Making progress",
+          "6": "Halfway there",
+          "7": "Steady climb",
+          "8": "Rising star",
+          "9": "Gaining speed",
+          "10": "Double digits",
+          "11": "Eleven strong",
+          "12": "Dozen delight",
+          "13": "Lucky thirteen",
+          "14": "Fourteen focus",
+          "15": "Fifteen fierce",
+          "16": "Sweet sixteen",
+          "17": "Seventeen strong",
+          "18": "Eighteen elite",
+          "19": "Nineteen noble",
+          "20": "Twenty triumph"
+        }
       },
       "hero": {
         "subtitle": "You're on a {streak}-day streak. Keep climbing!",
@@ -142,6 +173,80 @@
           "goal": "Goal"
         },
         "points": "+{xp} XP"
+      },
+      "missions": {
+        "title": "Today's missions",
+        "subtitle": "What you're aiming to do today",
+        "dayToday": "Today",
+        "dayYesterday": "Yesterday",
+        "dayTomorrow": "Tomorrow",
+        "missionCount": "{count} missions",
+        "missionCount_one": "{count} mission",
+        "missionCount_other": "{count} missions",
+        "addMission": "Add mission",
+        "emptyTitle": "No missions for today",
+        "emptyDescription": "Add a mission to get started and earn XP.",
+        "emptyCta": "Add your first mission",
+        "starterPackCta": "Use starter pack",
+        "loading": "Loading missions…",
+        "dailyQuestTitle": "Daily quest",
+        "dailyQuestProgress": "{completed}/{target} missions completed",
+        "weeklyCompleted": "Week done",
+        "weeklyScheduled": "Week planned",
+        "weeklyXp": "Week XP",
+        "due": "Due",
+        "status": {
+          "scheduled": "Scheduled",
+          "overdue": "Overdue",
+          "completed": "Completed"
+        },
+        "type": {
+          "habit": "Habit",
+          "goal": "Goal"
+        },
+        "points": "+{xp} XP"
+      },
+      "missionModal": {
+        "newTitle": "New mission",
+        "editTitle": "Edit mission",
+        "titleLabel": "Title",
+        "titlePlaceholder": "e.g. 30 min workout",
+        "categoryLabel": "Category",
+        "categoryPlaceholder": "Fitness, Learning, Productivity…",
+        "typeLabel": "Type",
+        "xpLabel": "XP reward",
+        "difficultyEasy": "Easy",
+        "difficultyMedium": "Medium",
+        "difficultyHard": "Hard",
+        "xpAutoHint": "Auto reward: {xp} XP",
+        "dueLabel": "Due",
+        "dueFriendlyToday": "Today at {time}",
+        "dueFriendlyYesterday": "Yesterday at {time}",
+        "dueFriendlyTomorrow": "Tomorrow at {time}",
+        "dueFriendlyDate": "{date} at {time}",
+        "duePresetTonight": "Tonight",
+        "duePresetTomorrowMorning": "Tomorrow morning",
+        "dueDone": "Done",
+        "repeatLabel": "Repeat",
+        "repeatNone": "None",
+        "repeatDaily": "Every day",
+        "repeatWeekly": "Every week",
+        "repeatHint": "Upcoming occurrences are created automatically.",
+        "repeatWeeksUnit": "weeks",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "deleteConfirm": "Delete this mission?",
+        "complete": "Complete",
+        "uncomplete": "Mark as to-do",
+        "categories": {
+          "Fitness": "Fitness",
+          "Learning": "Learning",
+          "Productivity": "Productivity",
+          "Health": "Health",
+          "Wellness": "Wellness",
+          "Career": "Career"
+        }
       },
       "progress": {
         "title": "XP momentum",
@@ -232,8 +337,9 @@
     },
     "avatarPicker": {
       "title": "Choose your avatar",
-      "description": "Select a predefined avatar",
+      "description": "Select a predefined avatar. Unlock more by leveling up.",
       "preview": "Preview",
+      "unlockAtLevel": "Unlock at level {level}",
       "actions": {
         "save": "Save",
         "cancel": "Cancel",
@@ -262,6 +368,91 @@
   },
   "shop": {
     "title": "Shop",
-    "underConstruction": "Under construction"
+    "subtitle": "Spend your gold on rewards that motivate you. Below are ideas you can use as inspiration.",
+    "balance": "Your balance",
+    "goldUnit": "gold",
+    "ideasTitle": "Reward ideas",
+    "ideasDescription": "Examples to inspire your own rewards — set your goals and treat yourself when you reach them.",
+    "costGold": "{cost} gold",
+    "redeem": "Redeem",
+    "notEnoughGold": "Not enough gold yet.",
+    "redeemFailed": "Could not redeem reward.",
+    "redeemSuccess": "Redeemed: {title}",
+    "customTitle": "Create your own reward",
+    "customDescription": "Define personal rewards and assign your own price.",
+    "customTitlePlaceholder": "e.g. Coffee date",
+    "create": "Create",
+    "createFailed": "Could not create reward.",
+    "createSuccess": "Reward created.",
+    "myRewardsTitle": "Your custom rewards",
+    "myRewardsEmpty": "You haven't created any custom rewards yet.",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "updateFailed": "Could not update reward.",
+    "updateSuccess": "Reward updated.",
+    "deleteFailed": "Could not delete reward.",
+    "deleteHasRedemptions": "You cannot delete a reward that has already been redeemed.",
+    "deleteSuccess": "Reward deleted.",
+    "historyTitle": "Redemption history",
+    "historyEmpty": "No redemptions yet.",
+    "categories": {
+      "learning": "Learning",
+      "wellness": "Wellness",
+      "productivity": "Productivity",
+      "lifestyle": "Lifestyle",
+      "fitness": "Fitness"
+    },
+    "examples": {
+      "book": {
+        "title": "Fine dining night",
+        "description": "Book a top restaurant to celebrate your progress"
+      },
+      "spa": {
+        "title": "Weekend city break",
+        "description": "A one-night trip to a city you've wanted to visit"
+      },
+      "gadget": {
+        "title": "Premium setup upgrade",
+        "description": "A high-end item that makes your daily work feel better"
+      },
+      "dinner": {
+        "title": "Guilt-free day off",
+        "description": "A full day to unplug and recharge with zero guilt"
+      },
+      "running": {
+        "title": "Dream sneakers",
+        "description": "The pair you've been eyeing for weeks"
+      },
+      "course": {
+        "title": "VIP concert ticket",
+        "description": "A live event you love, with a premium experience"
+      },
+      "massage": {
+        "title": "Massage + spa reset",
+        "description": "A full recovery session to reward your consistency"
+      },
+      "concert": {
+        "title": "Signature food experience",
+        "description": "Chef's tasting menu or a standout local spot"
+      },
+      "headphones": {
+        "title": "Nature escape day",
+        "description": "A hike, cabin day, or off-grid reset"
+      },
+      "weekend": {
+        "title": "Luxury date night",
+        "description": "Dinner plus a memorable activity without budget stress"
+      },
+      "gym": {
+        "title": "Premium fitness pack",
+        "description": "New coaching, classes, or gear to level up"
+      },
+      "meditation": {
+        "title": "Wishlist splurge",
+        "description": "That bigger treat you've delayed for too long"
+      }
+    }
   }
 }

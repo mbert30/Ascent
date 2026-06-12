@@ -143,3 +143,55 @@
   background-color: rgb(16 185 129 / 0.35) !important;
   box-shadow: 0 0 12px rgb(16 185 129 / 0.25);
 }
+
+/* Mission just completed: short scale + glow */
+@keyframes mission-complete-pop {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgb(16 185 129 / 0.4);
+  }
+  30% {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px 4px rgb(16 185 129 / 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 12px rgb(16 185 129 / 0.25);
+  }
+}
+.mission-just-completed {
+  animation: mission-complete-pop 0.6s ease-out;
+}
+
+/* Gold counter just updated */
+@keyframes gold-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+.gold-just-updated {
+  animation: gold-pulse 0.5s ease-out;
+}
+
+/* Level up dialog badge */
+@keyframes level-up-badge-pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.level-up-badge {
+  animation: level-up-badge-pop 0.4s ease-out;
+}

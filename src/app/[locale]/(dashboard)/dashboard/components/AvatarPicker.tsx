@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useTranslations } from 'next-intl'
 
-import { Check } from 'lucide-react'
+import { Check, Lock, LogOut } from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -17,6 +17,13 @@ import {
 } from '@/components/ui/dialog'
 
 import { cn } from '@/lib/utils'
+
+/** Avatars 0–3: level 1, 4–7: level 5, 8–11: level 15 */
+function getUnlockLevelForIndex(index: number): number {
+  if (index < 4) return 1
+  if (index < 8) return 5
+  return 15
+}
 
 const PREDEFINED_AVATARS = [
   {
@@ -74,7 +81,10 @@ interface AvatarPickerProps {
   onOpenChange: (open: boolean) => void
   currentAvatar?: string | null
   currentInitials: string
-  onAvatarSelect: (avatarUrl: string | null) => void
+  userLevel?: number
+  onAvatarSelect: (avatarUrl: string | null) => void | Promise<void>
+  onSignOut?: () => void | Promise<void>
+  signOutLabel?: string
 }
 
 export function AvatarPicker({
@@ -82,21 +92,23 @@ export function AvatarPicker({
   onOpenChange,
   currentAvatar,
   currentInitials,
+  userLevel = 1,
   onAvatarSelect,
+  onSignOut,
+  signOutLabel,
 }: AvatarPickerProps) {
   const t = useTranslations('dashboard.avatarPicker')
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(
     currentAvatar || null
   )
 
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (open) setSelectedAvatar(currentAvatar || null)
+  }, [open, currentAvatar])
+
   const handleSave = () => {
     onAvatarSelect(selectedAvatar)
-    onOpenChange(false)
-  }
-
-  const handleRemove = () => {
-    setSelectedAvatar(null)
-    onAvatarSelect(null)
     onOpenChange(false)
   }
 
@@ -124,26 +136,47 @@ export function AvatarPicker({
           </div>
 
           <div className="grid grid-cols-4 gap-4 sm:grid-cols-6">
-            {PREDEFINED_AVATARS.map((avatar) => {
+            {PREDEFINED_AVATARS.map((avatar, index) => {
               const isSelected = selectedAvatar === avatar.url
+              const unlockLevel = getUnlockLevelForIndex(index)
+              const isUnlocked = userLevel >= unlockLevel
               return (
                 <button
                   key={avatar.id}
                   type="button"
-                  onClick={() => setSelectedAvatar(avatar.url)}
+                  disabled={!isUnlocked}
+                  onClick={() => isUnlocked && setSelectedAvatar(avatar.url)}
                   className={cn(
                     'group relative aspect-square overflow-hidden rounded-full border-2 transition-all',
-                    isSelected
-                      ? 'border-indigo-400 ring-2 ring-indigo-400/50 ring-offset-2 ring-offset-slate-900'
-                      : 'border-white/20 hover:border-white/40'
+                    isUnlocked
+                      ? isSelected
+                        ? 'border-indigo-400 ring-2 ring-indigo-400/50 ring-offset-2 ring-offset-slate-900'
+                        : 'border-white/20 hover:border-white/40'
+                      : 'cursor-not-allowed border-white/10 opacity-60'
                   )}
+                  title={
+                    isUnlocked
+                      ? undefined
+                      : t('unlockAtLevel', { level: unlockLevel })
+                  }
                 >
                   <img
                     src={avatar.url}
                     alt={`Avatar ${avatar.id}`}
-                    className="h-full w-full object-cover"
+                    className={cn(
+                      'h-full w-full object-cover',
+                      !isUnlocked && 'opacity-30 grayscale'
+                    )}
                   />
-                  {isSelected && (
+                  {!isUnlocked && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5 bg-slate-950/95">
+                      <Lock className="h-5 w-5 text-white/80" />
+                      <span className="text-[10px] font-medium text-white/80">
+                        {unlockLevel}
+                      </span>
+                    </div>
+                  )}
+                  {isUnlocked && isSelected && (
                     <div className="absolute inset-0 flex items-center justify-center bg-indigo-500/20">
                       <Check className="h-6 w-6 text-white" />
                     </div>
@@ -154,14 +187,19 @@ export function AvatarPicker({
           </div>
 
           <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleRemove}
-              className="border-white/20 bg-white/10 text-white hover:bg-white/20"
-            >
-              {t('actions.remove')}
-            </Button>
+            <div className="flex items-center gap-2">
+              {onSignOut && signOutLabel && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onSignOut}
+                  className="border-red-400/30 bg-red-500/10 text-red-100 hover:bg-red-500/20"
+                >
+                  <LogOut className="mr-1 h-4 w-4" />
+                  {signOutLabel}
+                </Button>
+              )}
+            </div>
             <div className="flex gap-2">
               <Button
                 type="button"

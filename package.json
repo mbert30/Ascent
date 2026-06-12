@@ -13,6 +13,8 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:seed:cleanup": "ts-node prisma/seed/cleanup.ts",
+    "demo:cheat": "ts-node prisma/seed/cheats.ts",
+    "demo:cheat:boost": "ts-node prisma/seed/cheats.ts --all-demo --add-levels 10 --add-gold 1000 --add-xp 2500",
     "prepare": "husky install"
   },
   "dependencies": {
