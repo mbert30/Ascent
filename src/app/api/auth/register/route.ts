@@ -6,11 +6,11 @@ import { z } from 'zod'
 import { sendVerificationEmail } from '@/lib/email'
 import { hashPassword } from '@/lib/password'
 import { prisma } from '@/lib/prisma'
+import { ensureDefaultTheme } from '@/lib/themes/service'
 
 const registerSchema = z.object({
   email: z.string().email('Invalid email format'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
-  name: z.string().min(2, 'Name must be at least 2 characters'),
   locale: z.enum(['en', 'fr']).default('en'),
 })
 
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { email, password, name, locale } = validation.data
+    const { email, password, locale } = validation.data
 
     const existingUser = await prisma.user.findUnique({
       where: { email },
@@ -49,7 +49,6 @@ export async function POST(req: NextRequest) {
       data: {
         email,
         password: hashedPassword,
-        name,
         level: 1,
         xp: 0,
         currency: 0,
@@ -58,9 +57,10 @@ export async function POST(req: NextRequest) {
       select: {
         id: true,
         email: true,
-        name: true,
       },
     })
+
+    await ensureDefaultTheme(prisma, user.id)
 
     // Envoi de l'email de vérification — ne bloque pas l'inscription si ça échoue
     try {

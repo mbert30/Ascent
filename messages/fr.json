@@ -82,7 +82,8 @@
   },
   "dashboard": {
     "title": "Tableau de bord",
-    "welcome": "Bon retour, {name}",
+    "welcome": "Bon retour",
+    "themeButton": "Personnaliser le thème",
     "tabs": {
       "overview": "Vue d'ensemble",
       "goals": "Objectifs & Habitudes",
@@ -116,7 +117,7 @@
           "title": "Niveau supérieur !",
           "level": "Niveau {level}",
           "rewardGold": "+{gold} or",
-          "avatarsUnlocked": "Nouveaux avatars débloqués !"
+          "themesUnlocked": "Nouveau thème débloqué !"
         },
         "rewards": {
           "1": "Premiers pas",
@@ -367,15 +368,13 @@
         "exportData": "Exporter les données"
       }
     },
-    "avatarPicker": {
-      "title": "Choisissez votre avatar",
-      "description": "Sélectionnez un avatar prédéfini. Débloquez-en d'autres en montant de niveau.",
+    "themePicker": {
+      "title": "Choisissez votre thème",
+      "description": "Personnalisez l'apparence de l'app. Débloquez de nouveaux thèmes via les niveaux, séries et succès.",
       "preview": "Aperçu",
-      "unlockAtLevel": "Débloquer au niveau {level}",
       "actions": {
         "save": "Enregistrer",
-        "cancel": "Annuler",
-        "remove": "Retirer l'avatar"
+        "cancel": "Annuler"
       }
     },
     "streakModal": {
@@ -385,10 +384,12 @@
       "goalTitle": "Objectif de streak",
       "goalProgress": "{current} / {target} jours",
       "goalUnlock": "Atteins une série de 7 jours pour débloquer des récompenses exclusives.",
-      "avatarObjectivesTitle": "Objectifs avatars",
-      "avatarObjectiveTitle": "Niveau {level}",
-      "avatarObjectiveDescription": "Débloque {count} avatars exclusifs",
-      "avatarObjectiveLocked": "Niv. {current} / {level}",
+      "themeObjectivesTitle": "Objectifs thèmes",
+      "themeObjectiveLevelTitle": "Niveau {level}",
+      "themeObjectiveStreakTitle": "Série de {days} jours",
+      "themeObjectiveDescription": "Débloque le thème {themeId}",
+      "themeObjectiveLocked": "Niv. {current} / {level}",
+      "themeObjectiveStreakLocked": "{current} / {days} jours",
       "monthLongestStreak": "Plus longue série",
       "monthActiveDays": "Jours actifs",
       "daysUnit": "jours",
@@ -534,7 +535,13 @@
     "frames": {
       "bronze": "Bronze",
       "silver": "Argent",
-      "gold": "Or"
+      "gold": "Or",
+      "diamond": "Diamant",
+      "ruby": "Rubis",
+      "emerald": "Émeraude",
+      "sapphire": "Saphir",
+      "amethyst": "Améthyste",
+      "topaz": "Topaze"
     },
     "streakMaster": {
       "name": "Maître des séries",
@@ -620,9 +627,9 @@
       "title": "Ton centre de commande",
       "body": "Toute ta progression est ici — profil, niveau, série et or."
     },
-    "avatar": {
-      "title": "Ton avatar",
-      "body": "Appuie ici pour changer ton look. De nouveaux avatars se débloquent en montant de niveau."
+    "theme": {
+      "title": "Tes thèmes",
+      "body": "Appuie ici pour changer l'apparence de l'app. De nouveaux thèmes se débloquent en progressant."
     },
     "dailyLogin": {
       "title": "Récompense du jour",
@@ -646,11 +653,11 @@
     },
     "achievementsNav": {
       "title": "Succès",
-      "body": "Le trophée rassemble tes succès : 15 défis avec 3 paliers chacun. Débloque-les, puis récupère tes récompenses quand le badge rouge apparaît."
+      "body": "Le trophée rassemble tes succès : 15 défis avec 4 paliers chacun. Débloque-les, puis récupère tes récompenses quand le badge rouge apparaît."
     },
     "achievementsPage": {
       "title": "Grille des succès",
-      "body": "Chaque succès a des paliers bronze, argent et or. Appuie sur un succès pour voir ta progression et récupérer tes gains."
+      "body": "Chaque succès a des paliers bronze, argent, or et gemme (diamant, rubis, émeraude…). Appuie sur un succès pour voir ta progression et récupérer tes gains."
     },
     "habitRepeat": {
       "title": "Habitudes quotidiennes",
@@ -700,10 +707,74 @@
       "title": "Ouvre ta récompense",
       "body": "Ton nouveau niveau est débloqué. Récupère ton or — tu pourras le dépenser dans la boutique."
     },
+    "chooseTheme": {
+      "title": "Essaie ton nouveau thème",
+      "body": "Tu as débloqué le mode clair ! Ouvre le sélecteur de thèmes et essaie-le."
+    },
     "done": {
       "title": "Tu es prêt !",
       "body": "Tu sais comment fonctionnent les missions, l'XP, l'or et les récompenses. Maintenant, vise le sommet !",
       "cta": "Commencer l'ascension"
+    }
+  },
+  "themes": {
+    "unlockTitle": "Nouveau thème débloqué !",
+    "tryNow": "Essayer maintenant",
+    "dark": {
+      "name": "Sombre",
+      "description": "Noir profond avec nébuleuses rose et violet électriques."
+    },
+    "lava": {
+      "name": "Lave",
+      "description": "Magma en fusion et obsidienne — chaleur volcanique qui pulse et brille."
+    },
+    "crimson": {
+      "name": "Cramoisi",
+      "description": "Rouge sang sur noir pur — agressif et intense."
+    },
+    "ocean": {
+      "name": "Océan",
+      "description": "Bleus abyssaux bioluminescents des profondeurs."
+    },
+    "midnight": {
+      "name": "Minuit",
+      "description": "Violet du vide avec accents bleu électrique."
+    },
+    "rainbow": {
+      "name": "Arc-en-ciel",
+      "description": "Chaos spectrale — rouge, jaune, bleu en mouvement."
+    },
+    "aurora": {
+      "name": "Aurore",
+      "description": "Magenta, violet et cyan électriques — sans vert."
+    },
+    "neon": {
+      "name": "Néon",
+      "description": "Cyberpunk rose fluo et vert acide sur noir."
+    },
+    "prism": {
+      "name": "Prisme",
+      "description": "Iridescence holographique — débloque un palier gemme."
+    },
+    "ascended": {
+      "name": "Ascension",
+      "description": "Lumière cosmique dorée — débloque tous les autres thèmes."
+    },
+    "unlockSource": {
+      "default": "Toujours disponible",
+      "level": "Niveau {level}",
+      "streak": "Série de {days} jours",
+      "achievement": "Palier {tier} du succès",
+      "achievementAny": "N'importe quel palier gemme",
+      "allThemes": "Tous les thèmes ({count})"
+    },
+    "unlockDetail": {
+      "default": "Ce thème est disponible dès le départ.",
+      "level": "Atteins le niveau {level} pour débloquer ce thème.",
+      "streak": "Maintiens une série de {days} jours pour débloquer ce thème.",
+      "achievement": "Atteins le succès « {achievement} » (palier {tier}) pour débloquer ce thème.",
+      "achievementAny": "Atteins le palier {tier} sur n'importe quel succès (diamant, rubis, émeraude…) pour débloquer ce thème.",
+      "allThemes": "Débloque les {count} autres thèmes pour obtenir ce thème ultime."
     }
   }
 }

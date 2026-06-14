@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
       activeDays: monthSummary.activeDays,
       monthActiveDays: monthSummary.monthActiveDays,
       monthLongestStreak: monthSummary.monthLongestStreak,
-      avatarObjectives: summary.avatarObjectives,
+      themeObjectives: summary.themeObjectives,
       userLevel: user.level,
       year,
       month,

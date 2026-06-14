@@ -82,7 +82,8 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome back, {name}",
+    "welcome": "Welcome back",
+    "themeButton": "Customize theme",
     "tabs": {
       "overview": "Overview",
       "goals": "Goals & Habits",
@@ -116,7 +117,7 @@
           "title": "Level up!",
           "level": "Level {level}",
           "rewardGold": "+{gold} gold",
-          "avatarsUnlocked": "New avatars unlocked!"
+          "themesUnlocked": "New theme unlocked!"
         },
         "rewards": {
           "1": "First steps",
@@ -367,15 +368,13 @@
         "exportData": "Export data"
       }
     },
-    "avatarPicker": {
-      "title": "Choose your avatar",
-      "description": "Select a predefined avatar. Unlock more by leveling up.",
+    "themePicker": {
+      "title": "Choose your theme",
+      "description": "Personalize the app look. Unlock new themes through levels, streaks, and achievements.",
       "preview": "Preview",
-      "unlockAtLevel": "Unlock at level {level}",
       "actions": {
         "save": "Save",
-        "cancel": "Cancel",
-        "remove": "Remove avatar"
+        "cancel": "Cancel"
       }
     },
     "streakModal": {
@@ -385,10 +384,12 @@
       "goalTitle": "Streak goal",
       "goalProgress": "{current} / {target} days",
       "goalUnlock": "Reach a 7-day streak to unlock exclusive rewards.",
-      "avatarObjectivesTitle": "Avatar objectives",
-      "avatarObjectiveTitle": "Level {level}",
-      "avatarObjectiveDescription": "Unlock {count} exclusive avatars",
-      "avatarObjectiveLocked": "Lv. {current} / {level}",
+      "themeObjectivesTitle": "Theme objectives",
+      "themeObjectiveLevelTitle": "Level {level}",
+      "themeObjectiveStreakTitle": "{days}-day streak",
+      "themeObjectiveDescription": "Unlock the {themeId} theme",
+      "themeObjectiveLocked": "Lv. {current} / {level}",
+      "themeObjectiveStreakLocked": "{current} / {days} days",
       "monthLongestStreak": "Longest streak",
       "monthActiveDays": "Active days",
       "daysUnit": "days",
@@ -534,7 +535,13 @@
     "frames": {
       "bronze": "Bronze",
       "silver": "Silver",
-      "gold": "Gold"
+      "gold": "Gold",
+      "diamond": "Diamond",
+      "ruby": "Ruby",
+      "emerald": "Emerald",
+      "sapphire": "Sapphire",
+      "amethyst": "Amethyst",
+      "topaz": "Topaz"
     },
     "streakMaster": {
       "name": "Streak Master",
@@ -620,9 +627,9 @@
       "title": "Your command center",
       "body": "Everything about your progress lives up here — profile, level, streak, and gold."
     },
-    "avatar": {
-      "title": "Your avatar",
-      "body": "Tap here anytime to change your look. New avatars unlock as you level up."
+    "theme": {
+      "title": "Your themes",
+      "body": "Tap here to change the app's look. New themes unlock as you progress."
     },
     "dailyLogin": {
       "title": "Daily reward",
@@ -646,11 +653,11 @@
     },
     "achievementsNav": {
       "title": "Achievements",
-      "body": "The trophy collects your achievements: 15 challenges with 3 tiers each. Unlock them, then claim rewards when the red badge appears."
+      "body": "The trophy collects your achievements: 15 challenges with 4 tiers each. Unlock them, then claim rewards when the red badge appears."
     },
     "achievementsPage": {
       "title": "Achievement grid",
-      "body": "Each achievement has bronze, silver and gold tiers. Unlocked ones rise to the top — tap one to see progress and claim your loot."
+      "body": "Each achievement has bronze, silver, gold, and gem tiers (diamond, ruby, emerald…). Unlocked ones rise to the top — tap one to see progress and claim your loot."
     },
     "habitRepeat": {
       "title": "Daily habits",
@@ -700,10 +707,74 @@
       "title": "Open your reward",
       "body": "Your new level is unlocked. Collect your gold — you'll spend it in the shop."
     },
+    "chooseTheme": {
+      "title": "Try your new theme",
+      "body": "You unlocked Light mode! Open the theme picker and try it out."
+    },
     "done": {
       "title": "You're all set!",
       "body": "You know how missions, XP, gold, and rewards work. Now go crush your goals!",
       "cta": "Start climbing"
+    }
+  },
+  "themes": {
+    "unlockTitle": "New theme unlocked!",
+    "tryNow": "Try now",
+    "dark": {
+      "name": "Dark",
+      "description": "Void black with hot pink and violet nebula glows."
+    },
+    "lava": {
+      "name": "Lava",
+      "description": "Molten magma and obsidian — volcanic heat that pulses and glows."
+    },
+    "crimson": {
+      "name": "Crimson",
+      "description": "Blood red on pure black — aggressive and loud."
+    },
+    "ocean": {
+      "name": "Ocean",
+      "description": "Abyssal bioluminescent blues from the deep sea."
+    },
+    "midnight": {
+      "name": "Midnight",
+      "description": "Starless void purple with electric blue accents."
+    },
+    "rainbow": {
+      "name": "Rainbow",
+      "description": "Full-spectrum chaos — red, yellow, blue, constantly shifting."
+    },
+    "aurora": {
+      "name": "Aurora",
+      "description": "Electric magenta, violet, and cyan — no green in sight."
+    },
+    "neon": {
+      "name": "Neon",
+      "description": "Cyberpunk hot pink and acid lime on pitch black."
+    },
+    "prism": {
+      "name": "Prism",
+      "description": "Holographic iridescence — unlock any gem-tier achievement."
+    },
+    "ascended": {
+      "name": "Ascended",
+      "description": "Golden cosmic light — unlock every other theme first."
+    },
+    "unlockSource": {
+      "default": "Always available",
+      "level": "Level {level}",
+      "streak": "{days}-day streak",
+      "achievement": "Achievement tier {tier}",
+      "achievementAny": "Any gem-tier success",
+      "allThemes": "All themes ({count})"
+    },
+    "unlockDetail": {
+      "default": "This theme is available from the start.",
+      "level": "Reach level {level} to unlock this theme.",
+      "streak": "Maintain a {days}-day streak to unlock this theme.",
+      "achievement": "Reach the {achievement} achievement (tier {tier}) to unlock this theme.",
+      "achievementAny": "Reach tier {tier} on any achievement (diamond, ruby, emerald…) to unlock this theme.",
+      "allThemes": "Unlock all {count} other themes to earn this ultimate theme."
     }
   }
 }

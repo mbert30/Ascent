@@ -16,6 +16,7 @@ import {
 } from '@/lib/pending-rewards-service'
 import { prisma } from '@/lib/prisma'
 import { applyStreakMultiplier, getUserStreakContext } from '@/lib/streak-user'
+import { runThemeUnlockEvaluation } from '@/lib/themes/evaluate'
 import { updateMissionSchema } from '@/lib/validation/mission'
 
 const SPECIAL_MISSION_CATEGORIES = [
@@ -82,6 +83,8 @@ export async function PATCH(
     let updatedUser: { level: number; xp: number; currency: number } | undefined
     let newLevelRewards = 0
     let newAchievements: Awaited<ReturnType<typeof evaluateAchievements>> = []
+    let themeUnlock: { themeId: string } | undefined
+    let unlockedThemeIds: string[] = []
 
     if (parsed.data.status === 'COMPLETED') {
       const user = await prisma.user.findUnique({
@@ -108,6 +111,15 @@ export async function PATCH(
           DAILY_QUEST_TARGET
         )
         newAchievements = await evaluateAchievements(prisma, session.user.id)
+        const themeResult = await runThemeUnlockEvaluation(
+          prisma,
+          session.user.id,
+          level
+        )
+        if (themeResult.newThemeId) {
+          themeUnlock = { themeId: themeResult.newThemeId }
+        }
+        unlockedThemeIds = themeResult.allNewThemeIds
         updatedUser = { level, xp, currency: user.currency }
       }
     } else if (parsed.data.status === 'SCHEDULED') {
@@ -148,6 +160,8 @@ export async function PATCH(
       user: updatedUser,
       newLevelRewards,
       newAchievements,
+      themeUnlock,
+      unlockedThemeIds,
     })
   } catch (error) {
     console.error('Mission PATCH error:', error)

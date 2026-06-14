@@ -1,13 +1,11 @@
 export const dashboardData = {
   user: {
-    name: 'Axel Lapierre',
     username: 'axel.ascent',
     level: 12,
     xp: 4200,
     xpToNextLevel: 5000,
     totalXP: 4200,
     gold: 3200,
-    avatarInitials: 'AL',
   },
   // Mobile-first: early levels are very fast (low XP) with smaller rewards for quick progression feel
   levels: [

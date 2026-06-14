@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import { Progress } from '@/components/ui/progress'
 
+import { tierRowClass } from '@/lib/achievements/frames'
 import type { AchievementView } from '@/lib/achievements/service'
 import { cn } from '@/lib/utils'
 
@@ -88,13 +89,7 @@ export function AchievementDetailSheet({
               key={tier.tier}
               className={cn(
                 'flex items-center gap-3 rounded-xl border px-3 py-3',
-                tier.unlocked
-                  ? tier.frame === 'gold'
-                    ? 'achievement-frame-gold border-amber-400/40 bg-amber-500/10'
-                    : tier.frame === 'silver'
-                      ? 'achievement-frame-silver border-slate-300/30 bg-slate-400/10'
-                      : 'achievement-frame-bronze border-orange-700/40 bg-orange-900/20'
-                  : 'border-white/10 bg-white/[0.03] opacity-60'
+                tierRowClass(tier.frame, tier.unlocked)
               )}
             >
               <AchievementIcon

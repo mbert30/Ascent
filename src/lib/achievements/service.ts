@@ -351,7 +351,7 @@ export async function buildAchievementViews(
       icon: def.icon,
       progress,
       currentTier: effectiveTier,
-      maxTier: 3,
+      maxTier: def.tiers.length,
       tiers,
       nextThreshold,
       percentToNext,

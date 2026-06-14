@@ -69,15 +69,25 @@ async function main() {
       where: { email: SEED_EMAIL },
       create: {
         email: SEED_EMAIL,
-        name: 'Alex Mercer',
         bio: 'Building consistency one mission at a time.',
-        image: 'https://api.dicebear.com/8.x/adventurer/svg?seed=Alex-Mercer',
+        themeId: 'dark',
       },
       update: {
-        name: 'Alex Mercer',
         bio: 'Building consistency one mission at a time.',
-        image: 'https://api.dicebear.com/8.x/adventurer/svg?seed=Alex-Mercer',
+        themeId: 'dark',
       },
+    })
+
+    await tx.userThemeUnlock.upsert({
+      where: {
+        userId_themeId: { userId: user.id, themeId: 'dark' },
+      },
+      create: {
+        userId: user.id,
+        themeId: 'dark',
+        source: 'default',
+      },
+      update: {},
     })
 
     // Keep seed deterministic across reruns.

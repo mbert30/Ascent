@@ -28,7 +28,6 @@ export default function Home() {
   const translateZodError = (message: string) => {
     if (message.includes('Invalid email')) return t('auth.errors.invalidEmail')
     if (message.includes('at least 6')) return t('auth.errors.passwordTooShort')
-    if (message.includes('at least 2')) return t('auth.errors.nameTooShort')
     return t('auth.errors.signupFailed')
   }
 
@@ -36,7 +35,6 @@ export default function Home() {
   const [loginPassword, setLoginPassword] = useState('')
   const [signupEmail, setSignupEmail] = useState('')
   const [signupPassword, setSignupPassword] = useState('')
-  const [signupName, setSignupName] = useState('')
   const [error, setError] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -111,7 +109,6 @@ export default function Home() {
         body: JSON.stringify({
           email: signupEmail,
           password: signupPassword,
-          name: signupName,
           locale,
         }),
       })
@@ -337,17 +334,6 @@ export default function Home() {
 
                 <TabsContent value="signup" className="space-y-4">
                   <form onSubmit={handleSignup} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-name">{t('auth.name')}</Label>
-                      <Input
-                        id="signup-name"
-                        type="text"
-                        placeholder={t('auth.namePlaceholder')}
-                        value={signupName}
-                        onChange={(e) => setSignupName(e.target.value)}
-                        required
-                      />
-                    </div>
                     <div className="space-y-2">
                       <Label htmlFor="signup-email">{t('auth.email')}</Label>
                       <Input

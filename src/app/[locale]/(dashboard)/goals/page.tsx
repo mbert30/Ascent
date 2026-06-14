@@ -7,6 +7,7 @@ import Link from 'next/link'
 
 import { ArrowLeft, Sparkles, Target } from 'lucide-react'
 
+import { DashboardShell } from '@/components/layout/DashboardShell'
 import { Card, CardContent } from '@/components/ui/card'
 
 type Mission = {
@@ -40,8 +41,8 @@ export default function GoalsPage() {
   )
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950 p-4 md:p-6 lg:p-8">
-      <div className="mx-auto max-w-5xl space-y-6 text-white">
+    <DashboardShell contentClassName="p-4 md:p-6 lg:p-8">
+      <div className="mx-auto max-w-5xl space-y-6">
         <Link
           href={`/${locale}/dashboard`}
           className="inline-flex items-center gap-2 text-sm text-white/70 transition hover:text-white"
@@ -101,6 +102,6 @@ export default function GoalsPage() {
           </Card>
         </div>
       </div>
-    </div>
+    </DashboardShell>
   )
 }

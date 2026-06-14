@@ -37,6 +37,12 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-ascent-bg: var(--ascent-bg);
+  --color-ascent-text: var(--ascent-text);
+  --color-ascent-surface: var(--ascent-surface);
+  --color-ascent-glow-a: var(--ascent-glow-a);
+  --color-ascent-glow-b: var(--ascent-glow-b);
+  --color-ascent-glow-c: var(--ascent-glow-c);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -266,4 +272,411 @@
   box-shadow:
     0 0 22px rgba(251, 191, 36, 0.45),
     inset 0 0 14px rgba(251, 191, 36, 0.2);
+}
+
+.achievement-inner-locked {
+  background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+  filter: grayscale(0.8);
+}
+
+.achievement-inner-bronze {
+  background: linear-gradient(145deg, #451a03 0%, #92400e 45%, #d97706 100%);
+  box-shadow:
+    inset 0 2px 8px rgba(255, 200, 120, 0.25),
+    0 4px 14px rgba(180, 83, 9, 0.45);
+}
+
+.achievement-inner-silver {
+  background: linear-gradient(
+    145deg,
+    #334155 0%,
+    #94a3b8 42%,
+    #f1f5f9 78%,
+    #64748b 100%
+  );
+  box-shadow:
+    inset 0 2px 10px rgba(255, 255, 255, 0.35),
+    0 4px 16px rgba(148, 163, 184, 0.4);
+}
+
+.achievement-inner-gold {
+  background: linear-gradient(
+    145deg,
+    #78350f 0%,
+    #f59e0b 35%,
+    #fde047 65%,
+    #fbbf24 100%
+  );
+  box-shadow:
+    inset 0 2px 12px rgba(255, 255, 200, 0.45),
+    0 0 24px rgba(251, 191, 36, 0.55),
+    0 4px 18px rgba(217, 119, 6, 0.4);
+}
+
+@keyframes achievement-gem-shimmer {
+  0%,
+  100% {
+    filter: brightness(1) hue-rotate(0deg);
+  }
+  50% {
+    filter: brightness(1.2) hue-rotate(12deg);
+  }
+}
+
+.achievement-gem-shimmer {
+  animation: achievement-gem-shimmer 3s ease-in-out infinite;
+}
+
+.achievement-frame-diamond {
+  border-color: rgba(103, 232, 249, 0.85);
+  box-shadow:
+    0 0 24px rgba(103, 232, 249, 0.5),
+    inset 0 0 16px rgba(255, 255, 255, 0.25);
+}
+
+.achievement-inner-diamond {
+  background: linear-gradient(
+    145deg,
+    #0c4a6e 0%,
+    #67e8f9 35%,
+    #ffffff 55%,
+    #a5f3fc 75%,
+    #0891b2 100%
+  );
+  box-shadow:
+    inset 0 2px 14px rgba(255, 255, 255, 0.55),
+    0 0 28px rgba(103, 232, 249, 0.55);
+}
+
+.achievement-frame-ruby {
+  border-color: rgba(244, 63, 94, 0.85);
+  box-shadow:
+    0 0 24px rgba(244, 63, 94, 0.5),
+    inset 0 0 14px rgba(251, 113, 133, 0.25);
+}
+
+.achievement-inner-ruby {
+  background: linear-gradient(
+    145deg,
+    #4c0519 0%,
+    #be123c 40%,
+    #fb7185 65%,
+    #fda4af 100%
+  );
+  box-shadow:
+    inset 0 2px 12px rgba(255, 200, 210, 0.4),
+    0 0 26px rgba(244, 63, 94, 0.5);
+}
+
+.achievement-frame-emerald {
+  border-color: rgba(52, 211, 153, 0.85);
+  box-shadow:
+    0 0 24px rgba(52, 211, 153, 0.45),
+    inset 0 0 14px rgba(167, 243, 208, 0.2);
+}
+
+.achievement-inner-emerald {
+  background: linear-gradient(
+    145deg,
+    #064e3b 0%,
+    #059669 40%,
+    #34d399 65%,
+    #a7f3d0 100%
+  );
+  box-shadow:
+    inset 0 2px 12px rgba(200, 255, 220, 0.35),
+    0 0 26px rgba(52, 211, 153, 0.45);
+}
+
+.achievement-frame-sapphire {
+  border-color: rgba(59, 130, 246, 0.85);
+  box-shadow:
+    0 0 24px rgba(59, 130, 246, 0.5),
+    inset 0 0 14px rgba(147, 197, 253, 0.25);
+}
+
+.achievement-inner-sapphire {
+  background: linear-gradient(
+    145deg,
+    #172554 0%,
+    #1d4ed8 40%,
+    #60a5fa 65%,
+    #bfdbfe 100%
+  );
+  box-shadow:
+    inset 0 2px 12px rgba(200, 220, 255, 0.4),
+    0 0 26px rgba(59, 130, 246, 0.5);
+}
+
+.achievement-frame-amethyst {
+  border-color: rgba(192, 132, 252, 0.85);
+  box-shadow:
+    0 0 24px rgba(192, 132, 252, 0.5),
+    inset 0 0 14px rgba(233, 213, 255, 0.25);
+}
+
+.achievement-inner-amethyst {
+  background: linear-gradient(
+    145deg,
+    #3b0764 0%,
+    #7e22ce 40%,
+    #c084fc 65%,
+    #e9d5ff 100%
+  );
+  box-shadow:
+    inset 0 2px 12px rgba(240, 220, 255, 0.4),
+    0 0 26px rgba(192, 132, 252, 0.5);
+}
+
+.achievement-frame-topaz {
+  border-color: rgba(251, 191, 36, 0.9);
+  box-shadow:
+    0 0 24px rgba(251, 191, 36, 0.55),
+    inset 0 0 14px rgba(254, 243, 199, 0.3);
+}
+
+.achievement-inner-topaz {
+  background: linear-gradient(
+    145deg,
+    #78350f 0%,
+    #d97706 35%,
+    #fcd34d 60%,
+    #fef3c7 100%
+  );
+  box-shadow:
+    inset 0 2px 12px rgba(255, 250, 200, 0.45),
+    0 0 26px rgba(251, 191, 36, 0.55);
+}
+
+/* Ascent dashboard themes */
+[data-ascent-theme='dark'] {
+  --ascent-bg: #000000;
+  --ascent-text: #f8fafc;
+  --ascent-surface: #0f0a1a;
+  --ascent-glow-a: rgb(236 72 153 / 0.35);
+  --ascent-glow-b: rgb(99 102 241 / 0.4);
+  --ascent-glow-c: rgb(168 85 247 / 0.3);
+  --ascent-player-from: #db2777;
+  --ascent-player-via: #6366f1;
+  --ascent-player-to: #a855f7;
+  --ascent-player-shadow: rgba(168, 85, 247, 0.5);
+}
+
+[data-ascent-theme='lava'] {
+  --ascent-bg: #0d0200;
+  --ascent-text: #fff7ed;
+  --ascent-surface: #431407;
+  --ascent-glow-a: rgb(249 115 22 / 0.55);
+  --ascent-glow-b: rgb(220 38 38 / 0.45);
+  --ascent-glow-c: rgb(250 204 21 / 0.4);
+  --ascent-player-from: #7c2d12;
+  --ascent-player-via: #ea580c;
+  --ascent-player-to: #fde047;
+  --ascent-player-shadow: rgba(234, 88, 12, 0.55);
+}
+
+@keyframes ascent-lava-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+
+[data-ascent-theme='lava'] .pointer-events-none.absolute.inset-0 > div {
+  animation: ascent-lava-pulse 6s ease-in-out infinite;
+}
+
+[data-ascent-theme='lava']
+  .pointer-events-none.absolute.inset-0
+  > div:nth-child(2) {
+  animation-delay: -2s;
+}
+
+[data-ascent-theme='lava']
+  .pointer-events-none.absolute.inset-0
+  > div:nth-child(3) {
+  animation-delay: -4s;
+}
+
+[data-ascent-theme='crimson'] {
+  --ascent-bg: #050000;
+  --ascent-text: #fff1f2;
+  --ascent-surface: #1a0000;
+  --ascent-glow-a: rgb(239 68 68 / 0.45);
+  --ascent-glow-b: rgb(220 38 38 / 0.35);
+  --ascent-glow-c: rgb(251 146 60 / 0.25);
+  --ascent-player-from: #450a0a;
+  --ascent-player-via: #dc2626;
+  --ascent-player-to: #f97316;
+  --ascent-player-shadow: rgba(220, 38, 38, 0.55);
+}
+
+[data-ascent-theme='ocean'] {
+  --ascent-bg: #000814;
+  --ascent-text: #e0f2fe;
+  --ascent-surface: #001d3d;
+  --ascent-glow-a: rgb(0 255 255 / 0.25);
+  --ascent-glow-b: rgb(0 180 216 / 0.35);
+  --ascent-glow-c: rgb(72 202 228 / 0.2);
+  --ascent-player-from: #0077b6;
+  --ascent-player-via: #00b4d8;
+  --ascent-player-to: #90e0ef;
+  --ascent-player-shadow: rgba(0, 180, 216, 0.45);
+}
+
+[data-ascent-theme='midnight'] {
+  --ascent-bg: #000000;
+  --ascent-text: #ddd6fe;
+  --ascent-surface: #1e1060;
+  --ascent-glow-a: rgb(139 92 246 / 0.4);
+  --ascent-glow-b: rgb(59 130 246 / 0.3);
+  --ascent-glow-c: rgb(244 114 182 / 0.2);
+  --ascent-player-from: #1e1b4b;
+  --ascent-player-via: #6d28d9;
+  --ascent-player-to: #2563eb;
+  --ascent-player-shadow: rgba(109, 40, 217, 0.5);
+}
+
+@keyframes ascent-rainbow-shift {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+[data-ascent-theme='rainbow'] {
+  --ascent-bg: #0a0a0a;
+  --ascent-text: #ffffff;
+  --ascent-surface: #1a1020;
+  --ascent-glow-a: rgb(239 68 68 / 0.4);
+  --ascent-glow-b: rgb(234 179 8 / 0.35);
+  --ascent-glow-c: rgb(59 130 246 / 0.35);
+  --ascent-player-from: #ef4444;
+  --ascent-player-via: #eab308;
+  --ascent-player-to: #3b82f6;
+  --ascent-player-shadow: rgba(234, 179, 8, 0.45);
+}
+
+[data-ascent-theme='rainbow'] .pointer-events-none.absolute.inset-0 {
+  animation: ascent-rainbow-shift 12s linear infinite;
+}
+
+[data-ascent-theme='aurora'] {
+  --ascent-bg: #1a0033;
+  --ascent-text: #fae8ff;
+  --ascent-surface: #3b0764;
+  --ascent-glow-a: rgb(217 70 239 / 0.4);
+  --ascent-glow-b: rgb(6 182 212 / 0.35);
+  --ascent-glow-c: rgb(168 85 247 / 0.3);
+  --ascent-player-from: #c026d3;
+  --ascent-player-via: #7c3aed;
+  --ascent-player-to: #06b6d4;
+  --ascent-player-shadow: rgba(192, 38, 211, 0.45);
+}
+
+[data-ascent-theme='neon'] {
+  --ascent-bg: #050505;
+  --ascent-text: #f0fdf4;
+  --ascent-surface: #0f0015;
+  --ascent-glow-a: rgb(236 72 153 / 0.5);
+  --ascent-glow-b: rgb(132 204 22 / 0.45);
+  --ascent-glow-c: rgb(250 204 21 / 0.25);
+  --ascent-player-from: #ff00ff;
+  --ascent-player-via: #84cc16;
+  --ascent-player-to: #facc15;
+  --ascent-player-shadow: rgba(236, 72, 153, 0.55);
+}
+
+@keyframes ascent-prism-shift {
+  0%,
+  100% {
+    filter: hue-rotate(0deg) saturate(1.2);
+  }
+  50% {
+    filter: hue-rotate(60deg) saturate(1.4);
+  }
+}
+
+[data-ascent-theme='prism'] {
+  --ascent-bg: #0c0a14;
+  --ascent-text: #f8fafc;
+  --ascent-surface: #1a1528;
+  --ascent-glow-a: rgb(103 232 249 / 0.4);
+  --ascent-glow-b: rgb(244 114 182 / 0.4);
+  --ascent-glow-c: rgb(250 204 21 / 0.35);
+  --ascent-player-from: #22d3ee;
+  --ascent-player-via: #e879f9;
+  --ascent-player-to: #fbbf24;
+  --ascent-player-shadow: rgba(232, 121, 249, 0.5);
+}
+
+[data-ascent-theme='prism'] .pointer-events-none.absolute.inset-0 {
+  animation: ascent-prism-shift 8s ease-in-out infinite;
+}
+
+[data-ascent-theme='ascended'] {
+  --ascent-bg: #0a0812;
+  --ascent-text: #fef9c3;
+  --ascent-surface: #1c1528;
+  --ascent-glow-a: rgb(250 204 21 / 0.45);
+  --ascent-glow-b: rgb(168 85 247 / 0.35);
+  --ascent-glow-c: rgb(255 255 255 / 0.2);
+  --ascent-player-from: #fbbf24;
+  --ascent-player-via: #f59e0b;
+  --ascent-player-to: #a855f7;
+  --ascent-player-shadow: rgba(251, 191, 36, 0.55);
+}
+
+.ascent-player-bar {
+  background: linear-gradient(
+    to bottom right,
+    var(--ascent-player-from),
+    var(--ascent-player-via),
+    var(--ascent-player-to)
+  );
+  box-shadow: 0 12px 40px var(--ascent-player-shadow);
+}
+
+.ascent-player-icon-btn {
+  background-color: rgb(0 0 0 / 0.48);
+  border: 2px solid rgb(255 255 255 / 0.28);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.ascent-player-icon-btn:hover {
+  background-color: rgb(0 0 0 / 0.6);
+}
+
+.ascent-player-chip {
+  background-color: rgb(0 0 0 / 0.5);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.3);
+  backdrop-filter: blur(10px);
+  color: #fff;
+}
+
+.ascent-player-chip:hover {
+  background-color: rgb(0 0 0 / 0.62);
+}
+
+.ascent-player-stat {
+  text-shadow: 0 1px 4px rgb(0 0 0 / 0.55);
+}
+
+.ascent-player-icon {
+  filter: drop-shadow(0 1px 3px rgb(0 0 0 / 0.45));
+}
+
+.ascent-dialog-surface {
+  background-color: color-mix(in srgb, var(--ascent-surface) 95%, transparent);
+  color: var(--ascent-text);
+  border-color: color-mix(in srgb, var(--ascent-text) 20%, transparent);
 }

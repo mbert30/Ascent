@@ -11,7 +11,6 @@ datasource db {
 model User {
   id            String    @id @default(cuid()) // Identifiant unique
   email         String    @unique
-  name          String?
   password          String?
   resetToken           String?   @unique
   resetTokenExpiry     DateTime?
@@ -24,10 +23,10 @@ model User {
   level         Int       @default(1)
   xp            Int       @default(0)      // Expérience actuelle
   currency      Int       @default(0)      // "Gold" à dépenser
+  themeId       String    @default("dark") // Thème actif
   
   // --- SOCIAL & V2 (Futur) ---
   bio           String?
-  image         String?   // Avatar URL
   streakFreeze  Int       @default(0)      // Jokers pour sauver une série (Payant/Rare)
   frozenStreakDates Json  @default("[]")   // Dates YYYY-MM-DD comptées comme actives (freeze)
   
@@ -40,10 +39,22 @@ model User {
   pendingRewards PendingReward[]
   achievements  UserAchievement[]
   adRewardLogs  AdRewardLog[]
+  themeUnlocks  UserThemeUnlock[]
   
   // Relation Sociale (Self-referencing many-to-many pour les amis)
   followedBy    UserFollows[] @relation("following")
   following     UserFollows[] @relation("follower")
+}
+
+model UserThemeUnlock {
+  userId     String
+  themeId    String
+  source     String
+  unlockedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, themeId])
 }
 
 model UserFollows {

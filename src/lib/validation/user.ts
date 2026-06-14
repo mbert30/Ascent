@@ -9,9 +9,8 @@ import {
 
 const baseProfileSchema = z.object({
   email: z.email('Email is not valid'),
-  name: optionalNullableString(20),
   bio: optionalNullableString(280),
-  image: z.url('Image must be a valid URL').optional().nullable(),
+  themeId: z.string().optional(),
 })
 
 const gamificationSchema = z.object({

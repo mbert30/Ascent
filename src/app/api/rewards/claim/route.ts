@@ -7,6 +7,8 @@ import { applyXpAndLevelOnly } from '@/lib/levels'
 import { DAILY_LOGIN_MISSION_CATEGORY } from '@/lib/missions/special'
 import { createLevelUpRewards } from '@/lib/pending-rewards-service'
 import { prisma } from '@/lib/prisma'
+import { runThemeUnlockEvaluation } from '@/lib/themes/evaluate'
+import { getThemeState } from '@/lib/themes/service'
 
 export async function POST(request: NextRequest) {
   try {
@@ -80,9 +82,20 @@ export async function POST(request: NextRequest) {
         : []),
     ])
 
-    if (pending.type === 'DAILY_LOGIN' || pending.type === 'DAILY_QUEST') {
+    if (
+      pending.type === 'DAILY_LOGIN' ||
+      pending.type === 'DAILY_QUEST' ||
+      pending.type === 'ACHIEVEMENT'
+    ) {
       await evaluateAchievements(prisma, session.user.id)
     }
+
+    const themeResult = await runThemeUnlockEvaluation(
+      prisma,
+      session.user.id,
+      level
+    )
+    const themeState = await getThemeState(prisma, session.user.id)
 
     const achievementDef =
       pending.type === 'ACHIEVEMENT' && pending.refAchievementId
@@ -103,6 +116,10 @@ export async function POST(request: NextRequest) {
       gold: pending.gold,
       xp: pending.xp,
       user: { level, xp, currency },
+      themeUnlock: themeResult.newThemeId
+        ? { themeId: themeResult.newThemeId }
+        : undefined,
+      unlockedThemeIds: themeState.unlockedThemeIds,
     })
   } catch (error) {
     console.error('Claim reward error:', error)

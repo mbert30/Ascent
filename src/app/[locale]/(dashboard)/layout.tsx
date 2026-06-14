@@ -1,4 +1,5 @@
 import { OnboardingShell } from '@/components/onboarding/OnboardingShell'
+import { ThemeProvider } from '@/components/themes/ThemeProvider'
 
 // Layout for protected dashboard pages
 // This layout will wrap all routes in the (dashboard) group
@@ -8,5 +9,9 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <OnboardingShell>{children}</OnboardingShell>
+  return (
+    <ThemeProvider>
+      <OnboardingShell>{children}</OnboardingShell>
+    </ThemeProvider>
+  )
 }

@@ -11,6 +11,7 @@ export type OnboardingAdvanceEvent =
   | 'daily-login-claimed'
   | 'level-reward-claimed'
   | 'navigate-achievements'
+  | 'theme-picker-opened'
 
 export type OnboardingRoute = 'dashboard' | 'shop' | 'achievements'
 
@@ -46,11 +47,11 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
     route: 'dashboard',
   },
   {
-    id: 'avatar',
+    id: 'theme',
     type: 'spotlight',
-    target: 'avatar',
-    titleKey: 'avatar.title',
-    bodyKey: 'avatar.body',
+    target: 'theme',
+    titleKey: 'theme.title',
+    bodyKey: 'theme.body',
     ctaKey: 'next',
     advanceOn: 'next',
     route: 'dashboard',
@@ -211,6 +212,15 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
     titleKey: 'claimLevelModal.title',
     bodyKey: 'claimLevelModal.body',
     advanceOn: 'level-reward-claimed',
+    route: 'dashboard',
+  },
+  {
+    id: 'choose-theme',
+    type: 'spotlight',
+    target: 'theme',
+    titleKey: 'chooseTheme.title',
+    bodyKey: 'chooseTheme.body',
+    advanceOn: 'theme-picker-opened',
     route: 'dashboard',
   },
   {

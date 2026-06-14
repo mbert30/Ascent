@@ -1,4 +1,13 @@
-export type AchievementFrame = 'bronze' | 'silver' | 'gold'
+export type AchievementFrame =
+  | 'bronze'
+  | 'silver'
+  | 'gold'
+  | 'diamond'
+  | 'ruby'
+  | 'emerald'
+  | 'sapphire'
+  | 'amethyst'
+  | 'topaz'
 
 export type AchievementMetric =
   | 'streak'
@@ -18,7 +27,7 @@ export type AchievementMetric =
   | 'streak_freezes_used'
 
 export type AchievementTierDef = {
-  tier: 1 | 2 | 3
+  tier: 1 | 2 | 3 | 4
   threshold: number
   frame: AchievementFrame
   icon: string
@@ -46,6 +55,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
       { tier: 1, threshold: 3, frame: 'bronze', icon: '🔥', gold: 25, xp: 30 },
       { tier: 2, threshold: 7, frame: 'silver', icon: '🔥', gold: 75, xp: 100 },
       { tier: 3, threshold: 14, frame: 'gold', icon: '🔥', gold: 200, xp: 250 },
+      { tier: 4, threshold: 30, frame: 'ruby', icon: '🔥', gold: 350, xp: 400 },
     ],
   },
   {
@@ -72,6 +82,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
         gold: 250,
         xp: 300,
       },
+      {
+        tier: 4,
+        threshold: 250,
+        frame: 'emerald',
+        icon: '🎯',
+        gold: 400,
+        xp: 450,
+      },
     ],
   },
   {
@@ -84,6 +102,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
       { tier: 1, threshold: 3, frame: 'bronze', icon: '⭐', gold: 40, xp: 0 },
       { tier: 2, threshold: 5, frame: 'silver', icon: '⭐', gold: 100, xp: 0 },
       { tier: 3, threshold: 10, frame: 'gold', icon: '⭐', gold: 300, xp: 0 },
+      { tier: 4, threshold: 20, frame: 'topaz', icon: '⭐', gold: 500, xp: 0 },
     ],
   },
   {
@@ -117,6 +136,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
         gold: 400,
         xp: 150,
       },
+      {
+        tier: 4,
+        threshold: 10000,
+        frame: 'diamond',
+        icon: '🪙',
+        gold: 600,
+        xp: 200,
+      },
     ],
   },
   {
@@ -136,6 +163,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
         xp: 100,
       },
       { tier: 3, threshold: 30, frame: 'gold', icon: '⚡', gold: 220, xp: 200 },
+      {
+        tier: 4,
+        threshold: 75,
+        frame: 'sapphire',
+        icon: '⚡',
+        gold: 350,
+        xp: 300,
+      },
     ],
   },
   {
@@ -148,6 +183,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
       { tier: 1, threshold: 1, frame: 'bronze', icon: '🛍️', gold: 20, xp: 20 },
       { tier: 2, threshold: 5, frame: 'silver', icon: '🛍️', gold: 80, xp: 60 },
       { tier: 3, threshold: 15, frame: 'gold', icon: '🛍️', gold: 180, xp: 120 },
+      {
+        tier: 4,
+        threshold: 35,
+        frame: 'amethyst',
+        icon: '🛍️',
+        gold: 280,
+        xp: 180,
+      },
     ],
   },
   {
@@ -167,6 +210,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
         xp: 120,
       },
       { tier: 3, threshold: 90, frame: 'gold', icon: '📅', gold: 350, xp: 300 },
+      {
+        tier: 4,
+        threshold: 200,
+        frame: 'diamond',
+        icon: '📅',
+        gold: 500,
+        xp: 450,
+      },
     ],
   },
   {
@@ -186,6 +237,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
         xp: 0,
       },
       { tier: 3, threshold: 5000, frame: 'gold', icon: '✨', gold: 250, xp: 0 },
+      {
+        tier: 4,
+        threshold: 15000,
+        frame: 'topaz',
+        icon: '✨',
+        gold: 400,
+        xp: 0,
+      },
     ],
   },
   {
@@ -198,6 +257,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
       { tier: 1, threshold: 3, frame: 'bronze', icon: '🌅', gold: 25, xp: 30 },
       { tier: 2, threshold: 7, frame: 'silver', icon: '🌅', gold: 70, xp: 80 },
       { tier: 3, threshold: 14, frame: 'gold', icon: '🌅', gold: 180, xp: 150 },
+      { tier: 4, threshold: 30, frame: 'ruby', icon: '🌅', gold: 280, xp: 220 },
     ],
   },
   {
@@ -217,6 +277,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
         xp: 110,
       },
       { tier: 3, threshold: 70, frame: 'gold', icon: '💪', gold: 240, xp: 220 },
+      {
+        tier: 4,
+        threshold: 150,
+        frame: 'emerald',
+        icon: '💪',
+        gold: 380,
+        xp: 350,
+      },
     ],
   },
   {
@@ -236,6 +304,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
         xp: 100,
       },
       { tier: 3, threshold: 40, frame: 'gold', icon: '🏁', gold: 220, xp: 200 },
+      {
+        tier: 4,
+        threshold: 100,
+        frame: 'sapphire',
+        icon: '🏁',
+        gold: 350,
+        xp: 320,
+      },
     ],
   },
   {
@@ -262,6 +338,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
         gold: 260,
         xp: 250,
       },
+      {
+        tier: 4,
+        threshold: 350,
+        frame: 'amethyst',
+        icon: '🔄',
+        gold: 400,
+        xp: 380,
+      },
     ],
   },
   {
@@ -281,6 +365,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
         xp: 130,
       },
       { tier: 3, threshold: 30, frame: 'gold', icon: '💯', gold: 280, xp: 280 },
+      {
+        tier: 4,
+        threshold: 75,
+        frame: 'diamond',
+        icon: '💯',
+        gold: 420,
+        xp: 400,
+      },
     ],
   },
   {
@@ -293,6 +385,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
       { tier: 1, threshold: 1, frame: 'bronze', icon: '🎨', gold: 25, xp: 25 },
       { tier: 2, threshold: 3, frame: 'silver', icon: '🎨', gold: 70, xp: 70 },
       { tier: 3, threshold: 8, frame: 'gold', icon: '🎨', gold: 180, xp: 150 },
+      {
+        tier: 4,
+        threshold: 20,
+        frame: 'topaz',
+        icon: '🎨',
+        gold: 280,
+        xp: 220,
+      },
     ],
   },
   {
@@ -305,6 +405,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
       { tier: 1, threshold: 1, frame: 'bronze', icon: '🧊', gold: 30, xp: 30 },
       { tier: 2, threshold: 3, frame: 'silver', icon: '🧊', gold: 80, xp: 80 },
       { tier: 3, threshold: 8, frame: 'gold', icon: '🧊', gold: 200, xp: 180 },
+      {
+        tier: 4,
+        threshold: 20,
+        frame: 'sapphire',
+        icon: '🧊',
+        gold: 320,
+        xp: 280,
+      },
     ],
   },
 ]
@@ -313,4 +421,7 @@ export function getAchievementById(id: string): AchievementDef | undefined {
   return ACHIEVEMENTS.find((a) => a.id === id)
 }
 
-export const TOTAL_ACHIEVEMENT_TIERS = ACHIEVEMENTS.length * 3
+export const TOTAL_ACHIEVEMENT_TIERS = ACHIEVEMENTS.reduce(
+  (sum, a) => sum + a.tiers.length,
+  0
+)

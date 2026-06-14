@@ -1,8 +1,10 @@
 const STREAK_GOAL_DAYS = 7
 
-export const AVATAR_UNLOCK_OBJECTIVES = [
-  { level: 5, avatarCount: 4 },
-  { level: 15, avatarCount: 4 },
+export const THEME_UNLOCK_OBJECTIVES = [
+  { level: 5, themeId: 'crimson' },
+  { level: 10, themeId: 'ocean' },
+  { level: 15, themeId: 'midnight' },
+  { streakDays: 14, themeId: 'aurora' },
 ] as const
 
 export function toDateKey(date: Date): string {
@@ -139,10 +141,18 @@ export function buildStreakSummary(
       monthStart,
       monthEnd
     ),
-    avatarObjectives: AVATAR_UNLOCK_OBJECTIVES.map((objective) => ({
-      level: objective.level,
-      avatarCount: objective.avatarCount,
-      unlocked: userLevel >= objective.level,
+    themeObjectives: THEME_UNLOCK_OBJECTIVES.map((objective) => ({
+      ...('level' in objective
+        ? {
+            level: objective.level,
+            themeId: objective.themeId,
+            unlocked: userLevel >= objective.level,
+          }
+        : {
+            streakDays: objective.streakDays,
+            themeId: objective.themeId,
+            unlocked: currentStreak >= objective.streakDays,
+          }),
     })),
   }
 }

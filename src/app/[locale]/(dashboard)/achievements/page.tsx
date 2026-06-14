@@ -9,6 +9,7 @@ import { ArrowLeft, Trophy } from 'lucide-react'
 
 import { AchievementCard } from '@/components/achievements/AchievementCard'
 import { AchievementDetailSheet } from '@/components/achievements/AchievementDetailSheet'
+import { DashboardShell } from '@/components/layout/DashboardShell'
 import { Progress } from '@/components/ui/progress'
 
 import type { AchievementView } from '@/lib/achievements/service'
@@ -94,59 +95,52 @@ export default function AchievementsPage() {
     totalTiers > 0 ? Math.round((unlockedTiers / totalTiers) * 100) : 0
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-32 -left-24 size-[420px] rounded-full bg-indigo-500/25 blur-3xl" />
-        <div className="absolute top-1/3 right-[-10%] size-[380px] rounded-full bg-purple-500/20 blur-3xl" />
-      </div>
+    <DashboardShell>
+      <div className="mx-auto max-w-3xl space-y-6">
+        <Link
+          href={`/${locale}/dashboard`}
+          data-onboarding="achievements-back"
+          className="inline-flex items-center gap-2 text-sm text-white/70 transition hover:text-white"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t('back')}
+        </Link>
 
-      <div className="relative z-10 p-4 md:p-6 lg:p-8">
-        <div className="mx-auto max-w-3xl space-y-6">
-          <Link
-            href={`/${locale}/dashboard`}
-            data-onboarding="achievements-back"
-            className="inline-flex items-center gap-2 text-sm text-white/70 transition hover:text-white"
+        <header className="space-y-4">
+          <h1 className="flex items-center gap-3 text-2xl font-bold text-white sm:text-3xl">
+            <Trophy className="h-8 w-8 text-amber-400" />
+            {t('title')}
+          </h1>
+          <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-yellow-500/5 p-4 backdrop-blur-xl">
+            <div className="mb-2 flex items-center justify-between text-sm">
+              <span className="text-white/70">{t('globalProgress')}</span>
+              <span className="font-bold text-amber-200">
+                {t('tiersUnlocked', {
+                  current: unlockedTiers,
+                  total: totalTiers,
+                })}
+              </span>
+            </div>
+            <Progress value={globalPercent} className="h-3 bg-white/10" />
+          </div>
+        </header>
+
+        {loading ? (
+          <p className="text-center text-white/60">{t('loading')}</p>
+        ) : (
+          <div
+            data-onboarding="achievements-grid"
+            className="grid grid-cols-2 gap-3 sm:gap-4"
           >
-            <ArrowLeft className="h-4 w-4" />
-            {t('back')}
-          </Link>
-
-          <header className="space-y-4">
-            <h1 className="flex items-center gap-3 text-2xl font-bold text-white sm:text-3xl">
-              <Trophy className="h-8 w-8 text-amber-400" />
-              {t('title')}
-            </h1>
-            <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-yellow-500/5 p-4 backdrop-blur-xl">
-              <div className="mb-2 flex items-center justify-between text-sm">
-                <span className="text-white/70">{t('globalProgress')}</span>
-                <span className="font-bold text-amber-200">
-                  {t('tiersUnlocked', {
-                    current: unlockedTiers,
-                    total: totalTiers,
-                  })}
-                </span>
-              </div>
-              <Progress value={globalPercent} className="h-3 bg-white/10" />
-            </div>
-          </header>
-
-          {loading ? (
-            <p className="text-center text-white/60">{t('loading')}</p>
-          ) : (
-            <div
-              data-onboarding="achievements-grid"
-              className="grid grid-cols-2 gap-3 sm:gap-4"
-            >
-              {achievements.map((a) => (
-                <AchievementCard
-                  key={a.id}
-                  achievement={a}
-                  onClick={() => openDetail(a)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+            {achievements.map((a) => (
+              <AchievementCard
+                key={a.id}
+                achievement={a}
+                onClick={() => openDetail(a)}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <AchievementDetailSheet
@@ -161,6 +155,6 @@ export default function AchievementsPage() {
         celebration={claimCelebration}
         onClose={() => setClaimCelebration(null)}
       />
-    </div>
+    </DashboardShell>
   )
 }

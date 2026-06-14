@@ -20,12 +20,15 @@ import {
   Star,
   Target,
   Trophy,
+  Wand2,
   X,
 } from 'lucide-react'
 
 import { RewardedAdPrompt } from '@/components/ads/RewardedAdPrompt'
+import { DashboardShell } from '@/components/layout/DashboardShell'
 import { useOnboardingOptional } from '@/components/onboarding/OnboardingProvider'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useAscentTheme } from '@/components/themes/ThemeProvider'
+import { ThemeUnlockModal } from '@/components/themes/ThemeUnlockModal'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -51,11 +54,11 @@ import { TUTORIAL_MISSION_CATEGORY } from '@/lib/onboarding/constants'
 import { ONBOARDING_TUTORIAL_READY_EVENT } from '@/lib/onboarding/events'
 import type { OnboardingAdvanceEvent } from '@/lib/onboarding/steps'
 import type { PendingRewardDto } from '@/lib/pending-rewards'
+import { getThemeById } from '@/lib/themes/definitions'
 import { cn } from '@/lib/utils'
 
 import { dashboardData } from '@/data/dashboard'
 
-import { AvatarPicker } from './components/AvatarPicker'
 import {
   type ClaimCelebration,
   ClaimRewardModal,
@@ -63,6 +66,7 @@ import {
 import { DayPickerDialog } from './components/DayPickerDialog'
 import { type MissionForModal, MissionModal } from './components/MissionModal'
 import { StreakModal } from './components/StreakModal'
+import { ThemePicker } from './components/ThemePicker'
 
 const missionIconMap: Record<
   string,
@@ -102,8 +106,21 @@ export default function DashboardPage() {
   const [streakModalOpen, setStreakModalOpen] = useState(false)
   const [dayPickerOpen, setDayPickerOpen] = useState(false)
   const [currentStreak, setCurrentStreak] = useState(0)
-  const [avatarPickerOpen, setAvatarPickerOpen] = useState(false)
-  const [userAvatar, setUserAvatar] = useState<string | null>(null)
+  const [themePickerOpen, setThemePickerOpen] = useState(false)
+  const [themeUnlockId, setThemeUnlockId] = useState<string | null>(null)
+  const [pendingThemeUnlockAfterClaim, setPendingThemeUnlockAfterClaim] =
+    useState<string | null>(null)
+  const {
+    themeId,
+    unlockedThemeIds,
+    setThemeId,
+    setUnlockedThemeIds,
+    refreshTheme,
+  } = useAscentTheme()
+  const handleOpenThemePicker = useCallback(() => {
+    void refreshTheme()
+    setThemePickerOpen(true)
+  }, [refreshTheme])
   const [missions, setMissions] = useState<MissionForModal[]>([])
   const [missionsLoading, setMissionsLoading] = useState(true)
   const [missionModalOpen, setMissionModalOpen] = useState(false)
@@ -134,7 +151,6 @@ export default function DashboardPage() {
     xp: number
     currency: number
   } | null>(null)
-  const [userName, setUserName] = useState<string | null>(null)
   const [streakBonusPercent, setStreakBonusPercent] = useState(0)
   const [achievementPendingCount, setAchievementPendingCount] = useState(0)
   const [adPrompt, setAdPrompt] = useState<{
@@ -196,6 +212,28 @@ export default function DashboardPage() {
             setTimeout(() => setGoldGain(null), 2200)
           }
         }
+        if (data.unlockedThemeIds?.length) {
+          setUnlockedThemeIds(data.unlockedThemeIds)
+        }
+        if (data.themeUnlock?.themeId) {
+          if (
+            onboarding?.currentStep?.id === 'claim-level-modal' &&
+            data.type === 'LEVEL_UP' &&
+            data.refLevel === 2
+          ) {
+            setPendingThemeUnlockAfterClaim(data.themeUnlock.themeId)
+          } else if (!onboarding?.active) {
+            setThemeUnlockId(data.themeUnlock.themeId)
+          }
+          void refreshTheme()
+        } else if (
+          onboarding?.currentStep?.id === 'claim-level-modal' &&
+          data.type === 'LEVEL_UP' &&
+          data.refLevel === 2 &&
+          data.unlockedThemeIds?.includes('lava')
+        ) {
+          setPendingThemeUnlockAfterClaim('lava')
+        }
         setClaimCelebration({
           gold: data.gold,
           xp: data.xp,
@@ -225,11 +263,22 @@ export default function DashboardPage() {
         setClaimingId(null)
       }
     },
-    [fetchMissions, fetchPendingRewards, onboarding]
+    [
+      fetchMissions,
+      fetchPendingRewards,
+      onboarding,
+      setUnlockedThemeIds,
+      refreshTheme,
+    ]
   )
 
   const closeCelebration = useCallback(() => {
     setClaimCelebration(null)
+    if (pendingThemeUnlockAfterClaim) {
+      setThemeUnlockId(pendingThemeUnlockAfterClaim)
+      setPendingThemeUnlockAfterClaim(null)
+      return
+    }
     const event = pendingOnboardingClaim.current
     if (!event || !onboarding?.currentStep) return
     const stepId = onboarding.currentStep.id
@@ -239,7 +288,52 @@ export default function DashboardPage() {
     if (!matches) return
     pendingOnboardingClaim.current = null
     onboarding.signal(event)
+  }, [onboarding, pendingThemeUnlockAfterClaim])
+
+  const handleThemeUnlockClose = useCallback(() => {
+    setThemeUnlockId(null)
+    if (
+      onboarding?.currentStep?.id === 'claim-level-modal' &&
+      pendingOnboardingClaim.current === 'level-reward-claimed'
+    ) {
+      pendingOnboardingClaim.current = null
+      onboarding.signal('level-reward-claimed')
+    }
   }, [onboarding])
+
+  const handleThemeTryNow = useCallback(
+    async (id: string) => {
+      setThemeId(id)
+      await fetch('/api/user/me', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ themeId: id }),
+      })
+      if (
+        onboarding?.currentStep?.id === 'claim-level-modal' &&
+        pendingOnboardingClaim.current === 'level-reward-claimed'
+      ) {
+        pendingOnboardingClaim.current = null
+        onboarding.signal('level-reward-claimed')
+      }
+    },
+    [onboarding, setThemeId]
+  )
+
+  const handleThemeSelect = useCallback(
+    async (id: string) => {
+      setThemeId(id)
+      await fetch('/api/user/me', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ themeId: id }),
+      })
+      if (onboarding?.currentStep?.id === 'choose-theme') {
+        onboarding.signal('theme-picker-opened')
+      }
+    },
+    [onboarding, setThemeId]
+  )
 
   const dailyQuestPending = pendingRewards.find((r) => r.type === 'DAILY_QUEST')
   const dailyLoginPending = pendingRewards.find((r) => r.type === 'DAILY_LOGIN')
@@ -322,6 +416,15 @@ export default function DashboardPage() {
           if (data.user) {
             setUserStats(data.user)
           }
+          if (data.themeUnlock?.themeId && !onboarding?.active) {
+            setThemeUnlockId(data.themeUnlock.themeId)
+            void refreshTheme()
+          }
+          if (data.unlockedThemeIds?.length) {
+            setUnlockedThemeIds([
+              ...new Set([...unlockedThemeIds, ...data.unlockedThemeIds]),
+            ])
+          }
           if (data.bonusPercent != null) {
             setStreakBonusPercent(data.bonusPercent)
           }
@@ -359,7 +462,15 @@ export default function DashboardPage() {
         setCompletingId(null)
       }
     },
-    [fetchMissions, onboarding, fetchPendingRewards, tMissions]
+    [
+      fetchMissions,
+      onboarding,
+      fetchPendingRewards,
+      tMissions,
+      unlockedThemeIds,
+      setUnlockedThemeIds,
+      refreshTheme,
+    ]
   )
 
   const uncompleteMission = useCallback(
@@ -396,8 +507,12 @@ export default function DashboardPage() {
             xp: data.xp ?? 0,
             currency: data.currency ?? 0,
           })
-        if (data?.image !== undefined) setUserAvatar(data.image ?? null)
-        if (data?.name) setUserName(data.name)
+        if (data?.unlockedThemeIds) {
+          setUnlockedThemeIds(data.unlockedThemeIds)
+        }
+        if (data?.themeId) {
+          setThemeId(data.themeId)
+        }
       })
       .catch(() => {})
     fetch('/api/streak')
@@ -418,7 +533,9 @@ export default function DashboardPage() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [setThemeId, setUnlockedThemeIds])
+
+  const activeTheme = getThemeById(themeId)
 
   const openMissionModal = useCallback(
     (mission: MissionForModal | null) => {
@@ -434,16 +551,6 @@ export default function DashboardPage() {
     },
     [onboarding]
   )
-
-  const displayName = userName ?? user.name
-  const avatarInitials =
-    displayName
-      .split(' ')
-      .filter(Boolean)
-      .map((part) => part[0])
-      .join('')
-      .slice(0, 2)
-      .toUpperCase() || user.avatarInitials
 
   const displayLevel = userStats?.level ?? user.level
   const displayXp = userStats?.xp ?? overview.summary.currentXP
@@ -573,38 +680,53 @@ export default function DashboardPage() {
   }, [fetchMissions, todayStr])
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-32 -left-24 size-[420px] rounded-full bg-indigo-500/30 blur-3xl" />
-        <div className="absolute top-1/3 right-[-10%] size-[420px] rounded-full bg-purple-500/30 blur-3xl" />
-        <div className="absolute bottom-[-20%] left-1/4 size-[380px] rounded-full bg-sky-400/20 blur-3xl" />
-      </div>
-
-      <div className="relative z-10 p-4 md:p-6 lg:p-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 text-slate-50">
-          {/* Player bar — mobile-game style: avatar + stats as icons only */}
+    <>
+      <DashboardShell>
+        <div className="mx-auto flex max-w-7xl flex-col gap-6">
+          {/* Player bar — theme button + stats */}
           <Card
             data-onboarding="player-bar"
-            className="relative overflow-hidden border-none bg-gradient-to-br from-indigo-600 via-purple-600 to-fuchsia-500 text-white shadow-[0_12px_40px_rgba(88,28,135,0.4)]"
+            className="ascent-player-bar relative overflow-hidden border-none text-white"
           >
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.25),transparent_50%)] opacity-90" />
             <div className="relative z-10 flex items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4">
-              <button
-                type="button"
-                data-onboarding="avatar"
-                onClick={() => setAvatarPickerOpen(true)}
-                className="flex-shrink-0 transition-transform hover:scale-105 active:scale-95"
-                aria-label={t('welcome', { name: displayName })}
-              >
-                <Avatar className="h-12 w-12 border-2 border-white/50 shadow-xl sm:h-14 sm:w-14">
-                  {userAvatar && (
-                    <AvatarImage src={userAvatar} alt={displayName} />
+              <div className="flex shrink-0 items-center gap-2">
+                <button
+                  type="button"
+                  data-onboarding="theme"
+                  onClick={handleOpenThemePicker}
+                  className="ascent-player-icon-btn group relative flex h-11 w-11 flex-col overflow-hidden rounded-xl transition hover:scale-105 active:scale-95 sm:h-12 sm:w-12"
+                  aria-label={t('themeButton')}
+                >
+                  <div className="flex flex-1 items-center justify-center">
+                    <Wand2 className="ascent-player-icon h-5 w-5 text-amber-200 sm:h-6 sm:w-6" />
+                  </div>
+                  {activeTheme && (
+                    <div
+                      className={cn(
+                        'h-1.5 w-full bg-gradient-to-r',
+                        activeTheme.preview
+                      )}
+                    />
                   )}
-                  <AvatarFallback className="bg-white/25 text-base font-bold text-white sm:text-lg">
-                    {avatarInitials}
-                  </AvatarFallback>
-                </Avatar>
-              </button>
+                </button>
+
+                <Link
+                  href={`/${locale}/achievements`}
+                  data-onboarding="achievements"
+                  className="ascent-player-icon-btn relative flex h-11 w-11 items-center justify-center rounded-xl transition hover:scale-105 active:scale-95 sm:h-12 sm:w-12"
+                  title={t('overview.achievements')}
+                  aria-label={t('overview.achievements')}
+                >
+                  {(achievementPendingCount > 0 ||
+                    achievementPendingFromRewards > 0) && (
+                    <span className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 animate-pulse items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white shadow-lg">
+                      {achievementPendingCount || achievementPendingFromRewards}
+                    </span>
+                  )}
+                  <Trophy className="ascent-player-icon h-5 w-5 text-amber-200 sm:h-6 sm:w-6" />
+                </Link>
+              </div>
 
               <div className="flex flex-1 items-center justify-end gap-2 sm:gap-3">
                 <Dialog
@@ -615,7 +737,7 @@ export default function DashboardPage() {
                     <button
                       type="button"
                       data-onboarding="level"
-                      className="relative flex items-center gap-1.5 rounded-xl bg-white/20 px-3 py-2 shadow-lg backdrop-blur-sm transition hover:bg-white/30 active:scale-95 sm:gap-2 sm:px-4"
+                      className="ascent-player-chip relative flex items-center gap-1.5 rounded-xl px-3 py-2 transition active:scale-95 sm:gap-2 sm:px-4"
                       aria-label={`${t('overview.summary.level')} ${userStats?.level ?? overview.summary.level}`}
                     >
                       {levelPendingCount > 0 && (
@@ -623,8 +745,8 @@ export default function DashboardPage() {
                           {levelPendingCount}
                         </span>
                       )}
-                      <Sparkles className="h-4 w-4 text-amber-200 sm:h-5 sm:w-5" />
-                      <span className="text-lg font-bold sm:text-xl">
+                      <Sparkles className="ascent-player-icon h-4 w-4 text-amber-200 sm:h-5 sm:w-5" />
+                      <span className="ascent-player-stat text-lg font-bold sm:text-xl">
                         {userStats?.level ?? overview.summary.level}
                       </span>
                     </button>
@@ -792,7 +914,7 @@ export default function DashboardPage() {
                   type="button"
                   data-onboarding="streak"
                   onClick={() => setStreakModalOpen(true)}
-                  className="relative flex items-center gap-1.5 rounded-xl bg-white/20 px-3 py-2 shadow-lg backdrop-blur-sm transition hover:bg-white/30 active:scale-95 sm:gap-2 sm:px-4"
+                  className="ascent-player-chip relative flex items-center gap-1.5 rounded-xl px-3 py-2 transition active:scale-95 sm:gap-2 sm:px-4"
                   title={t('overview.streaks.days', {
                     count: currentStreak,
                   })}
@@ -804,37 +926,22 @@ export default function DashboardPage() {
                       })}
                     </span>
                   )}
-                  <Flame className="h-4 w-4 animate-pulse text-orange-200 sm:h-5 sm:w-5" />
-                  <span className="text-lg font-bold sm:text-xl">
+                  <Flame className="ascent-player-icon h-4 w-4 animate-pulse text-orange-200 sm:h-5 sm:w-5" />
+                  <span className="ascent-player-stat text-lg font-bold sm:text-xl">
                     {currentStreak}
                   </span>
                 </button>
 
                 <Link
-                  href={`/${locale}/achievements`}
-                  data-onboarding="achievements"
-                  className="relative flex h-10 min-w-[2.75rem] items-center justify-center gap-1.5 rounded-xl bg-white/20 px-3 py-2 shadow-lg backdrop-blur-sm transition hover:bg-white/30 active:scale-95 sm:min-w-[3rem] sm:gap-2 sm:px-4"
-                  title={t('overview.achievements')}
-                >
-                  {(achievementPendingCount > 0 ||
-                    achievementPendingFromRewards > 0) && (
-                    <span className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 animate-pulse items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white shadow-lg">
-                      {achievementPendingCount || achievementPendingFromRewards}
-                    </span>
-                  )}
-                  <Trophy className="h-5 w-5 text-amber-200" />
-                </Link>
-
-                <Link
                   href={`/${locale}/shop`}
                   data-onboarding="gold"
-                  className="relative flex items-center gap-1.5 rounded-xl bg-white/20 px-3 py-2 shadow-lg backdrop-blur-sm transition hover:bg-white/30 active:scale-95 sm:gap-2 sm:px-4"
+                  className="ascent-player-chip relative flex items-center gap-1.5 rounded-xl px-3 py-2 transition active:scale-95 sm:gap-2 sm:px-4"
                   title={t('overview.summary.gold')}
                 >
-                  <Coins className="h-4 w-4 text-yellow-300 sm:h-5 sm:w-5" />
+                  <Coins className="ascent-player-icon h-4 w-4 text-yellow-300 sm:h-5 sm:w-5" />
                   <span
                     className={cn(
-                      'text-lg font-bold sm:text-xl',
+                      'ascent-player-stat text-lg font-bold sm:text-xl',
                       goldGain != null && 'gold-just-updated'
                     )}
                   >
@@ -1224,24 +1331,27 @@ export default function DashboardPage() {
             )}
           </section>
         </div>
-      </div>
+      </DashboardShell>
 
-      <AvatarPicker
-        open={avatarPickerOpen}
-        onOpenChange={setAvatarPickerOpen}
-        currentAvatar={userAvatar}
-        currentInitials={avatarInitials}
-        userLevel={userStats?.level ?? user.level}
-        onAvatarSelect={async (url) => {
-          setUserAvatar(url)
-          await fetch('/api/user/me', {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ image: url }),
-          })
+      <ThemePicker
+        open={themePickerOpen}
+        onOpenChange={(open) => {
+          setThemePickerOpen(open)
+          if (open && onboarding?.currentStep?.id === 'choose-theme') {
+            onboarding.signal('theme-picker-opened')
+          }
         }}
+        currentThemeId={themeId}
+        unlockedThemeIds={unlockedThemeIds}
+        onOpen={refreshTheme}
+        onThemeSelect={handleThemeSelect}
         onSignOut={() => signOut({ callbackUrl: `/${locale}` })}
         signOutLabel={t('profile.actions.signOut')}
+      />
+      <ThemeUnlockModal
+        themeId={themeUnlockId}
+        onClose={handleThemeUnlockClose}
+        onTryNow={handleThemeTryNow}
       />
       <StreakModal
         open={streakModalOpen}
@@ -1307,6 +1417,6 @@ export default function DashboardPage() {
           </span>
         </div>
       )}
-    </div>
+    </>
   )
 }

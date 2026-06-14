@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 
 import { SponsoredCard } from '@/components/ads/SponsoredCard'
+import { DashboardShell } from '@/components/layout/DashboardShell'
 import { useOnboardingOptional } from '@/components/onboarding/OnboardingProvider'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -256,421 +257,414 @@ export default function ShopPage() {
   const customRewards = rewards.filter((reward) => reward.isEditable)
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-32 -left-24 size-[420px] rounded-full bg-amber-500/20 blur-3xl" />
-        <div className="absolute top-1/3 right-[-10%] size-[380px] rounded-full bg-yellow-500/15 blur-3xl" />
-      </div>
+    <DashboardShell>
+      <div className="mx-auto max-w-4xl space-y-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <Link
+            href={`/${locale}/dashboard`}
+            data-onboarding="back-dashboard"
+            className="inline-flex scroll-mt-24 items-center gap-2 text-sm text-white/70 transition hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {locale.startsWith('fr') ? 'Tableau de bord' : 'Dashboard'}
+          </Link>
+        </div>
 
-      <div className="relative z-10 p-4 md:p-6 lg:p-8">
-        <div className="mx-auto max-w-4xl space-y-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <Link
-              href={`/${locale}/dashboard`}
-              data-onboarding="back-dashboard"
-              className="inline-flex scroll-mt-24 items-center gap-2 text-sm text-white/70 transition hover:text-white"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              {locale.startsWith('fr') ? 'Tableau de bord' : 'Dashboard'}
-            </Link>
-          </div>
+        <header className="space-y-2">
+          <h1 className="flex items-center gap-3 text-2xl font-bold text-white sm:text-3xl">
+            <ShoppingBag className="h-8 w-8 text-amber-400" />
+            {t('title')}
+          </h1>
+          <p className="max-w-2xl text-white/70">{t('subtitle')}</p>
+        </header>
 
-          <header className="space-y-2">
-            <h1 className="flex items-center gap-3 text-2xl font-bold text-white sm:text-3xl">
-              <ShoppingBag className="h-8 w-8 text-amber-400" />
-              {t('title')}
-            </h1>
-            <p className="max-w-2xl text-white/70">{t('subtitle')}</p>
-          </header>
-
-          <Card className="border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-yellow-500/5 backdrop-blur-xl">
-            <CardContent className="flex flex-wrap items-center justify-between gap-4 py-4">
-              <span className="text-sm font-medium text-white/80">
-                {t('balance')}
+        <Card className="border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-yellow-500/5 backdrop-blur-xl">
+          <CardContent className="flex flex-wrap items-center justify-between gap-4 py-4">
+            <span className="text-sm font-medium text-white/80">
+              {t('balance')}
+            </span>
+            <div className="flex items-center gap-2">
+              <Coins className="h-5 w-5 text-amber-400" />
+              <span className="text-xl font-bold text-amber-200">
+                {balance !== null ? numberFormatter.format(balance) : '—'}
               </span>
-              <div className="flex items-center gap-2">
-                <Coins className="h-5 w-5 text-amber-400" />
-                <span className="text-xl font-bold text-amber-200">
-                  {balance !== null ? numberFormatter.format(balance) : '—'}
-                </span>
-                <span className="text-sm text-white/60">{t('goldUnit')}</span>
+              <span className="text-sm text-white/60">{t('goldUnit')}</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <section className="space-y-4">
+          <div>
+            <h2 className="text-lg font-semibold text-white">
+              {t('customTitle')}
+            </h2>
+            <p className="mt-1 text-sm text-white/60">
+              {t('customDescription')}
+            </p>
+          </div>
+          <Card
+            data-onboarding="create-reward"
+            className="border-white/10 bg-white/[0.04] backdrop-blur-xl"
+          >
+            <CardContent className="grid gap-3 p-4 sm:grid-cols-3">
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder={t('customTitlePlaceholder')}
+                className="border-white/20 bg-white/10 text-white placeholder:text-white/50"
+              />
+              <Input
+                type="number"
+                min={0}
+                max={5000}
+                value={cost}
+                onChange={(e) => setCost(Number(e.target.value) || 0)}
+                className="border-white/20 bg-white/10 text-white"
+              />
+              <div className="flex gap-2">
+                <Input
+                  value={icon}
+                  onChange={(e) => setIcon(e.target.value)}
+                  placeholder="🎁"
+                  className="border-white/20 bg-white/10 text-white"
+                />
+                <Button
+                  type="button"
+                  onClick={handleCreateReward}
+                  disabled={creating || !title.trim()}
+                  className="gap-1.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
+                >
+                  <Plus className="h-4 w-4" />
+                  {t('create')}
+                </Button>
               </div>
             </CardContent>
           </Card>
+          {message && <p className="text-sm text-white/70">{message}</p>}
+        </section>
 
-          <section className="space-y-4">
-            <div>
-              <h2 className="text-lg font-semibold text-white">
-                {t('customTitle')}
-              </h2>
-              <p className="mt-1 text-sm text-white/60">
-                {t('customDescription')}
-              </p>
-            </div>
-            <Card
-              data-onboarding="create-reward"
-              className="border-white/10 bg-white/[0.04] backdrop-blur-xl"
-            >
-              <CardContent className="grid gap-3 p-4 sm:grid-cols-3">
-                <Input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder={t('customTitlePlaceholder')}
-                  className="border-white/20 bg-white/10 text-white placeholder:text-white/50"
-                />
-                <Input
-                  type="number"
-                  min={0}
-                  max={5000}
-                  value={cost}
-                  onChange={(e) => setCost(Number(e.target.value) || 0)}
-                  className="border-white/20 bg-white/10 text-white"
-                />
-                <div className="flex gap-2">
-                  <Input
-                    value={icon}
-                    onChange={(e) => setIcon(e.target.value)}
-                    placeholder="🎁"
-                    className="border-white/20 bg-white/10 text-white"
-                  />
-                  <Button
-                    type="button"
-                    onClick={handleCreateReward}
-                    disabled={creating || !title.trim()}
-                    className="gap-1.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
-                  >
-                    <Plus className="h-4 w-4" />
-                    {t('create')}
-                  </Button>
-                </div>
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold text-white">
+            {t('myRewardsTitle')}
+          </h2>
+          {customRewards.length === 0 ? (
+            <Card className="border-white/10 bg-white/[0.04] backdrop-blur-xl">
+              <CardContent className="py-5 text-sm text-white/60">
+                {t('myRewardsEmpty')}
               </CardContent>
             </Card>
-            {message && <p className="text-sm text-white/70">{message}</p>}
-          </section>
-
-          <section className="space-y-3">
-            <h2 className="text-lg font-semibold text-white">
-              {t('myRewardsTitle')}
-            </h2>
-            {customRewards.length === 0 ? (
-              <Card className="border-white/10 bg-white/[0.04] backdrop-blur-xl">
-                <CardContent className="py-5 text-sm text-white/60">
-                  {t('myRewardsEmpty')}
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-2">
-                {customRewards.map((reward) => {
-                  const isEditing = editingId === reward.id
-                  return (
-                    <Card
-                      key={reward.id}
-                      className="border-white/10 bg-white/[0.04] backdrop-blur-xl"
-                    >
-                      <CardContent className="space-y-3 py-3">
-                        {isEditing ? (
-                          <div className="grid gap-2 sm:grid-cols-3">
-                            <Input
-                              value={editTitle}
-                              onChange={(e) => setEditTitle(e.target.value)}
-                              className="border-white/20 bg-white/10 text-white"
-                            />
-                            <Input
-                              type="number"
-                              min={0}
-                              max={5000}
-                              value={editCost}
-                              onChange={(e) =>
-                                setEditCost(Number(e.target.value) || 0)
-                              }
-                              className="border-white/20 bg-white/10 text-white"
-                            />
-                            <Input
-                              value={editIcon}
-                              onChange={(e) => setEditIcon(e.target.value)}
-                              placeholder="🎁"
-                              className="border-white/20 bg-white/10 text-white"
-                            />
-                          </div>
-                        ) : (
-                          <div className="flex items-center justify-between gap-3">
-                            <div className="flex min-w-0 items-center gap-2">
-                              <span className="text-xl" aria-hidden>
-                                {reward.icon || '🎁'}
-                              </span>
-                              <div className="min-w-0">
-                                <p className="truncate text-sm font-semibold text-white">
-                                  {reward.title}
-                                </p>
-                                <p className="text-xs text-amber-300">
-                                  {t('costGold', {
-                                    cost: numberFormatter.format(reward.cost),
-                                  })}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        <div className="flex flex-wrap gap-2">
-                          <Button
-                            type="button"
-                            size="sm"
-                            disabled={
-                              redeeming === reward.id ||
-                              (balance ?? 0) < reward.cost
-                            }
-                            onClick={() =>
-                              handleRedeem({
-                                id: reward.id,
-                                title: reward.title,
-                                cost: reward.cost,
-                                icon: reward.icon,
-                                rewardId: reward.id,
-                              })
-                            }
-                            className="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 hover:opacity-95"
-                          >
-                            {redeeming === reward.id ? '…' : t('redeem')}
-                          </Button>
-
-                          {isEditing ? (
-                            <>
-                              <Button
-                                type="button"
-                                size="sm"
-                                onClick={handleSaveEdit}
-                                disabled={savingEdit || !editTitle.trim()}
-                                className="gap-1.5 bg-indigo-500 text-white hover:bg-indigo-400"
-                              >
-                                <Save className="h-4 w-4" />
-                                {t('save')}
-                              </Button>
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="secondary"
-                                onClick={() => setEditingId(null)}
-                                className="gap-1.5"
-                              >
-                                <X className="h-4 w-4" />
-                                {t('cancel')}
-                              </Button>
-                            </>
-                          ) : (
-                            <>
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="secondary"
-                                onClick={() => startEdit(reward)}
-                                className="gap-1.5"
-                              >
-                                <Pencil className="h-4 w-4" />
-                                {t('edit')}
-                              </Button>
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="destructive"
-                                onClick={() => handleDeleteReward(reward.id)}
-                                disabled={deletingId === reward.id}
-                                className="gap-1.5"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                                {t('delete')}
-                              </Button>
-                            </>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )
-                })}
-              </div>
-            )}
-          </section>
-
-          <section className="space-y-4">
-            <div>
-              <h2 className="text-lg font-semibold text-white">
-                {t('ideasTitle')}
-              </h2>
-              <p className="mt-1 text-sm text-white/60">
-                {t('ideasDescription')}
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {IDEAS_BEFORE_SPONSOR.map((reward) => (
-                <Card
-                  key={reward.id}
-                  className="border-white/10 bg-white/[0.04] backdrop-blur-xl transition hover:border-white/20 hover:bg-white/[0.06]"
-                >
-                  <CardContent className="flex h-full flex-col gap-2 p-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="text-xl" role="img" aria-hidden>
-                        {reward.icon}
-                      </span>
-                      <Badge
-                        variant="secondary"
-                        className="shrink-0 border-white/20 bg-white/10 text-[0.65rem] text-white/80"
-                      >
-                        {t(reward.categoryKey)}
-                      </Badge>
-                    </div>
-                    <h3 className="text-sm font-semibold text-white">
-                      {t(reward.titleKey)}
-                    </h3>
-                    <p className="line-clamp-2 flex-1 text-xs text-white/60">
-                      {t(reward.descriptionKey)}
-                    </p>
-                    <p className="flex items-center gap-1 text-xs font-medium text-amber-300">
-                      <Coins className="h-3.5 w-3.5" />
-                      {t('costGold', {
-                        cost: numberFormatter.format(reward.cost),
-                      })}
-                    </p>
-                    <Button
-                      type="button"
-                      size="sm"
-                      disabled={
-                        redeeming === reward.id || (balance ?? 0) < reward.cost
-                      }
-                      onClick={() =>
-                        'systemType' in reward &&
-                        reward.systemType === 'STREAK_FREEZE'
-                          ? handleStreakFreezePurchase({
-                              id: reward.id,
-                              titleKey: reward.titleKey,
-                              cost: reward.cost,
-                            })
-                          : handleRedeem({
-                              id: reward.id,
-                              title: t(reward.titleKey),
-                              cost: reward.cost,
-                              icon: reward.icon,
-                              titleKey: reward.titleKey,
-                            })
-                      }
-                      className="mt-auto bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 hover:opacity-95"
-                    >
-                      {redeeming === reward.id ? '…' : t('redeem')}
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-              <SponsoredCard />
-              {IDEAS_AFTER_SPONSOR.map((reward) => (
-                <Card
-                  key={reward.id}
-                  className="border-white/10 bg-white/[0.04] backdrop-blur-xl transition hover:border-white/20 hover:bg-white/[0.06]"
-                >
-                  <CardContent className="flex h-full flex-col gap-2 p-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="text-xl" role="img" aria-hidden>
-                        {reward.icon}
-                      </span>
-                      <Badge
-                        variant="secondary"
-                        className="shrink-0 border-white/20 bg-white/10 text-[0.65rem] text-white/80"
-                      >
-                        {t(reward.categoryKey)}
-                      </Badge>
-                    </div>
-                    <h3 className="text-sm font-semibold text-white">
-                      {t(reward.titleKey)}
-                    </h3>
-                    <p className="line-clamp-2 flex-1 text-xs text-white/60">
-                      {t(reward.descriptionKey)}
-                    </p>
-                    <p className="flex items-center gap-1 text-xs font-medium text-amber-300">
-                      <Coins className="h-3.5 w-3.5" />
-                      {t('costGold', {
-                        cost: numberFormatter.format(reward.cost),
-                      })}
-                    </p>
-                    <Button
-                      type="button"
-                      size="sm"
-                      disabled={
-                        redeeming === reward.id || (balance ?? 0) < reward.cost
-                      }
-                      onClick={() =>
-                        'systemType' in reward &&
-                        reward.systemType === 'STREAK_FREEZE'
-                          ? handleStreakFreezePurchase({
-                              id: reward.id,
-                              titleKey: reward.titleKey,
-                              cost: reward.cost,
-                            })
-                          : handleRedeem({
-                              id: reward.id,
-                              title: t(reward.titleKey),
-                              cost: reward.cost,
-                              icon: reward.icon,
-                              titleKey: reward.titleKey,
-                            })
-                      }
-                      className="mt-auto bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 hover:opacity-95"
-                    >
-                      {redeeming === reward.id ? '…' : t('redeem')}
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          <section className="space-y-3">
-            <h2 className="text-lg font-semibold text-white">
-              {t('historyTitle')}
-            </h2>
-            {history.length === 0 ? (
-              <Card className="border-white/10 bg-white/[0.04] backdrop-blur-xl">
-                <CardContent className="py-5 text-sm text-white/60">
-                  {t('historyEmpty')}
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-2">
-                {history.map((item) => (
+          ) : (
+            <div className="space-y-2">
+              {customRewards.map((reward) => {
+                const isEditing = editingId === reward.id
+                return (
                   <Card
-                    key={item.id}
+                    key={reward.id}
                     className="border-white/10 bg-white/[0.04] backdrop-blur-xl"
                   >
-                    <CardContent className="flex items-center justify-between gap-3 py-3">
-                      <div className="flex min-w-0 items-center gap-2">
-                        <span className="text-xl" aria-hidden>
-                          {item.icon || '🎁'}
-                        </span>
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-semibold text-white">
-                            {item.title}
-                          </p>
-                          <p className="text-xs text-white/60">
-                            {new Date(item.purchasedAt).toLocaleDateString(
-                              locale,
-                              {
-                                day: 'numeric',
-                                month: 'short',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              }
-                            )}
-                          </p>
+                    <CardContent className="space-y-3 py-3">
+                      {isEditing ? (
+                        <div className="grid gap-2 sm:grid-cols-3">
+                          <Input
+                            value={editTitle}
+                            onChange={(e) => setEditTitle(e.target.value)}
+                            className="border-white/20 bg-white/10 text-white"
+                          />
+                          <Input
+                            type="number"
+                            min={0}
+                            max={5000}
+                            value={editCost}
+                            onChange={(e) =>
+                              setEditCost(Number(e.target.value) || 0)
+                            }
+                            className="border-white/20 bg-white/10 text-white"
+                          />
+                          <Input
+                            value={editIcon}
+                            onChange={(e) => setEditIcon(e.target.value)}
+                            placeholder="🎁"
+                            className="border-white/20 bg-white/10 text-white"
+                          />
                         </div>
+                      ) : (
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex min-w-0 items-center gap-2">
+                            <span className="text-xl" aria-hidden>
+                              {reward.icon || '🎁'}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-semibold text-white">
+                                {reward.title}
+                              </p>
+                              <p className="text-xs text-amber-300">
+                                {t('costGold', {
+                                  cost: numberFormatter.format(reward.cost),
+                                })}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex flex-wrap gap-2">
+                        <Button
+                          type="button"
+                          size="sm"
+                          disabled={
+                            redeeming === reward.id ||
+                            (balance ?? 0) < reward.cost
+                          }
+                          onClick={() =>
+                            handleRedeem({
+                              id: reward.id,
+                              title: reward.title,
+                              cost: reward.cost,
+                              icon: reward.icon,
+                              rewardId: reward.id,
+                            })
+                          }
+                          className="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 hover:opacity-95"
+                        >
+                          {redeeming === reward.id ? '…' : t('redeem')}
+                        </Button>
+
+                        {isEditing ? (
+                          <>
+                            <Button
+                              type="button"
+                              size="sm"
+                              onClick={handleSaveEdit}
+                              disabled={savingEdit || !editTitle.trim()}
+                              className="gap-1.5 bg-indigo-500 text-white hover:bg-indigo-400"
+                            >
+                              <Save className="h-4 w-4" />
+                              {t('save')}
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="secondary"
+                              onClick={() => setEditingId(null)}
+                              className="gap-1.5"
+                            >
+                              <X className="h-4 w-4" />
+                              {t('cancel')}
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="secondary"
+                              onClick={() => startEdit(reward)}
+                              className="gap-1.5"
+                            >
+                              <Pencil className="h-4 w-4" />
+                              {t('edit')}
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => handleDeleteReward(reward.id)}
+                              disabled={deletingId === reward.id}
+                              className="gap-1.5"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                              {t('delete')}
+                            </Button>
+                          </>
+                        )}
                       </div>
-                      <span className="text-sm font-semibold text-amber-300">
-                        -{numberFormatter.format(item.cost)} {t('goldUnit')}
-                      </span>
                     </CardContent>
                   </Card>
-                ))}
-              </div>
-            )}
-          </section>
-        </div>
+                )
+              })}
+            </div>
+          )}
+        </section>
+
+        <section className="space-y-4">
+          <div>
+            <h2 className="text-lg font-semibold text-white">
+              {t('ideasTitle')}
+            </h2>
+            <p className="mt-1 text-sm text-white/60">
+              {t('ideasDescription')}
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {IDEAS_BEFORE_SPONSOR.map((reward) => (
+              <Card
+                key={reward.id}
+                className="border-white/10 bg-white/[0.04] backdrop-blur-xl transition hover:border-white/20 hover:bg-white/[0.06]"
+              >
+                <CardContent className="flex h-full flex-col gap-2 p-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-xl" role="img" aria-hidden>
+                      {reward.icon}
+                    </span>
+                    <Badge
+                      variant="secondary"
+                      className="shrink-0 border-white/20 bg-white/10 text-[0.65rem] text-white/80"
+                    >
+                      {t(reward.categoryKey)}
+                    </Badge>
+                  </div>
+                  <h3 className="text-sm font-semibold text-white">
+                    {t(reward.titleKey)}
+                  </h3>
+                  <p className="line-clamp-2 flex-1 text-xs text-white/60">
+                    {t(reward.descriptionKey)}
+                  </p>
+                  <p className="flex items-center gap-1 text-xs font-medium text-amber-300">
+                    <Coins className="h-3.5 w-3.5" />
+                    {t('costGold', {
+                      cost: numberFormatter.format(reward.cost),
+                    })}
+                  </p>
+                  <Button
+                    type="button"
+                    size="sm"
+                    disabled={
+                      redeeming === reward.id || (balance ?? 0) < reward.cost
+                    }
+                    onClick={() =>
+                      'systemType' in reward &&
+                      reward.systemType === 'STREAK_FREEZE'
+                        ? handleStreakFreezePurchase({
+                            id: reward.id,
+                            titleKey: reward.titleKey,
+                            cost: reward.cost,
+                          })
+                        : handleRedeem({
+                            id: reward.id,
+                            title: t(reward.titleKey),
+                            cost: reward.cost,
+                            icon: reward.icon,
+                            titleKey: reward.titleKey,
+                          })
+                    }
+                    className="mt-auto bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 hover:opacity-95"
+                  >
+                    {redeeming === reward.id ? '…' : t('redeem')}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+            <SponsoredCard />
+            {IDEAS_AFTER_SPONSOR.map((reward) => (
+              <Card
+                key={reward.id}
+                className="border-white/10 bg-white/[0.04] backdrop-blur-xl transition hover:border-white/20 hover:bg-white/[0.06]"
+              >
+                <CardContent className="flex h-full flex-col gap-2 p-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-xl" role="img" aria-hidden>
+                      {reward.icon}
+                    </span>
+                    <Badge
+                      variant="secondary"
+                      className="shrink-0 border-white/20 bg-white/10 text-[0.65rem] text-white/80"
+                    >
+                      {t(reward.categoryKey)}
+                    </Badge>
+                  </div>
+                  <h3 className="text-sm font-semibold text-white">
+                    {t(reward.titleKey)}
+                  </h3>
+                  <p className="line-clamp-2 flex-1 text-xs text-white/60">
+                    {t(reward.descriptionKey)}
+                  </p>
+                  <p className="flex items-center gap-1 text-xs font-medium text-amber-300">
+                    <Coins className="h-3.5 w-3.5" />
+                    {t('costGold', {
+                      cost: numberFormatter.format(reward.cost),
+                    })}
+                  </p>
+                  <Button
+                    type="button"
+                    size="sm"
+                    disabled={
+                      redeeming === reward.id || (balance ?? 0) < reward.cost
+                    }
+                    onClick={() =>
+                      'systemType' in reward &&
+                      reward.systemType === 'STREAK_FREEZE'
+                        ? handleStreakFreezePurchase({
+                            id: reward.id,
+                            titleKey: reward.titleKey,
+                            cost: reward.cost,
+                          })
+                        : handleRedeem({
+                            id: reward.id,
+                            title: t(reward.titleKey),
+                            cost: reward.cost,
+                            icon: reward.icon,
+                            titleKey: reward.titleKey,
+                          })
+                    }
+                    className="mt-auto bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 hover:opacity-95"
+                  >
+                    {redeeming === reward.id ? '…' : t('redeem')}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold text-white">
+            {t('historyTitle')}
+          </h2>
+          {history.length === 0 ? (
+            <Card className="border-white/10 bg-white/[0.04] backdrop-blur-xl">
+              <CardContent className="py-5 text-sm text-white/60">
+                {t('historyEmpty')}
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-2">
+              {history.map((item) => (
+                <Card
+                  key={item.id}
+                  className="border-white/10 bg-white/[0.04] backdrop-blur-xl"
+                >
+                  <CardContent className="flex items-center justify-between gap-3 py-3">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <span className="text-xl" aria-hidden>
+                        {item.icon || '🎁'}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-white">
+                          {item.title}
+                        </p>
+                        <p className="text-xs text-white/60">
+                          {new Date(item.purchasedAt).toLocaleDateString(
+                            locale,
+                            {
+                              day: 'numeric',
+                              month: 'short',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            }
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-sm font-semibold text-amber-300">
+                      -{numberFormatter.format(item.cost)} {t('goldUnit')}
+                    </span>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </section>
       </div>
-    </div>
+    </DashboardShell>
   )
 }
