@@ -14,6 +14,7 @@ export async function GET() {
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
       select: {
+        email: true,
         level: true,
         xp: true,
         currency: true,
@@ -27,6 +28,7 @@ export async function GET() {
     const themeState = await getThemeState(prisma, session.user.id)
 
     return NextResponse.json({
+      email: user.email,
       themeId: themeState.themeId,
       unlockedThemeIds: themeState.unlockedThemeIds,
       level: user.level,

@@ -9,6 +9,7 @@ import { ArrowLeft, Trophy } from 'lucide-react'
 
 import { AchievementCard } from '@/components/achievements/AchievementCard'
 import { AchievementDetailSheet } from '@/components/achievements/AchievementDetailSheet'
+import { useJuice } from '@/components/juice/useJuice'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { Progress } from '@/components/ui/progress'
 
@@ -30,6 +31,7 @@ export default function AchievementsPage() {
   const [claimingId, setClaimingId] = useState<string | null>(null)
   const [claimCelebration, setClaimCelebration] =
     useState<ClaimCelebration>(null)
+  const juice = useJuice()
 
   const load = async () => {
     setLoading(true)
@@ -57,6 +59,7 @@ export default function AchievementsPage() {
   }
 
   const handleClaim = async (pendingId: string) => {
+    juice.playUiClick()
     setClaimingId(pendingId)
     try {
       const res = await fetch('/api/rewards/claim', {
@@ -66,6 +69,9 @@ export default function AchievementsPage() {
       })
       if (!res.ok) return
       const data = await res.json()
+      if (data.gold > 0) {
+        juice.playGoldGain(data.gold)
+      }
       setClaimCelebration({
         gold: data.gold,
         xp: data.xp,

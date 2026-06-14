@@ -137,6 +137,73 @@
   }
 }
 
+.flame-wiggle {
+  animation: flame-wiggle 0.5s ease-in-out infinite;
+}
+
+@keyframes juice-level-flash {
+  0% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.juice-level-flash {
+  background: radial-gradient(
+    ellipse at center top,
+    rgb(251 191 36 / 0.35),
+    transparent 70%
+  );
+  animation: juice-level-flash 0.35s ease-out forwards;
+}
+
+.juice-xp-bar-fill {
+  transition: width 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.juice-xp-bar [data-slot='progress-indicator'] {
+  transition: transform 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mission-just-completed,
+  .gold-just-updated,
+  .reward-pop-badge,
+  .tier-unlock-pop,
+  .level-up-badge,
+  .flame-wiggle,
+  .achievement-pulse,
+  .juice-xp-bar-fill,
+  .juice-level-flash {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+[data-reduced-motion='true'] .mission-just-completed,
+[data-reduced-motion='true'] .gold-just-updated,
+[data-reduced-motion='true'] .reward-pop-badge,
+[data-reduced-motion='true'] .tier-unlock-pop,
+[data-reduced-motion='true'] .level-up-badge,
+[data-reduced-motion='true'] .flame-wiggle,
+[data-reduced-motion='true'] .achievement-pulse,
+[data-reduced-motion='true'] .juice-xp-bar-fill,
+[data-reduced-motion='true'] .juice-level-flash,
+html[data-reduced-motion='true'] .mission-just-completed,
+html[data-reduced-motion='true'] .gold-just-updated,
+html[data-reduced-motion='true'] .reward-pop-badge,
+html[data-reduced-motion='true'] .tier-unlock-pop,
+html[data-reduced-motion='true'] .level-up-badge,
+html[data-reduced-motion='true'] .flame-wiggle,
+html[data-reduced-motion='true'] .achievement-pulse,
+html[data-reduced-motion='true'] .juice-xp-bar-fill,
+html[data-reduced-motion='true'] .juice-level-flash {
+  animation: none !important;
+  transition: none !important;
+}
+
 /* Mobile: momentum scroll inside level list dialog */
 .levels-dialog-scroll {
   -webkit-overflow-scrolling: touch;

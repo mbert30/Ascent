@@ -30,6 +30,7 @@ const SPOTLIGHT_PADDING = 8
 function routeFromPathname(pathname: string): string | null {
   if (pathname.includes('/achievements')) return 'achievements'
   if (pathname.includes('/shop')) return 'shop'
+  if (pathname.includes('/settings')) return 'settings'
   if (pathname.includes('/dashboard')) return 'dashboard'
   return null
 }

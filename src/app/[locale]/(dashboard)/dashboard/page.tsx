@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { signOut } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 
@@ -16,6 +15,7 @@ import {
   Loader2,
   Plus,
   Rocket,
+  Settings,
   Sparkles,
   Star,
   Target,
@@ -25,6 +25,8 @@ import {
 } from 'lucide-react'
 
 import { RewardedAdPrompt } from '@/components/ads/RewardedAdPrompt'
+import { buildAchievementUnlockEvents } from '@/components/juice/JuiceProvider'
+import { useJuice } from '@/components/juice/useJuice'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { useOnboardingOptional } from '@/components/onboarding/OnboardingProvider'
 import { useAscentTheme } from '@/components/themes/ThemeProvider'
@@ -48,6 +50,7 @@ import {
   DAILY_QUEST_TARGET,
   countsTowardDailyQuest,
 } from '@/lib/daily-quest'
+import type { CelebrationEvent } from '@/lib/juice/types'
 import { toBcp47Locale } from '@/lib/locale'
 import { DAILY_LOGIN_MISSION_CATEGORY } from '@/lib/missions/special'
 import { TUTORIAL_MISSION_CATEGORY } from '@/lib/onboarding/constants'
@@ -121,6 +124,15 @@ export default function DashboardPage() {
     void refreshTheme()
     setThemePickerOpen(true)
   }, [refreshTheme])
+
+  useEffect(() => {
+    if (sessionStorage.getItem('ascent:openThemePicker') !== '1') return
+    sessionStorage.removeItem('ascent:openThemePicker')
+    void refreshTheme()
+    const timer = window.setTimeout(() => setThemePickerOpen(true), 0)
+    return () => window.clearTimeout(timer)
+  }, [refreshTheme])
+
   const [missions, setMissions] = useState<MissionForModal[]>([])
   const [missionsLoading, setMissionsLoading] = useState(true)
   const [missionModalOpen, setMissionModalOpen] = useState(false)
@@ -160,18 +172,30 @@ export default function DashboardPage() {
   const [xpBoostToast, setXpBoostToast] = useState<string | null>(null)
 
   const onboarding = useOnboardingOptional()
+  const juice = useJuice()
   const pendingOnboardingClaim = useRef<OnboardingAdvanceEvent | null>(null)
+  const prevDailyQuestPendingRef = useRef(false)
+  const themeUnlockFromQueueRef = useRef(false)
 
   const fetchPendingRewards = useCallback(async () => {
     try {
       const res = await fetch('/api/rewards/pending')
       if (res.ok) {
-        setPendingRewards(await res.json())
+        const data: PendingRewardDto[] = await res.json()
+        const hasQuest = data.some((r) => r.type === 'DAILY_QUEST')
+        if (!prevDailyQuestPendingRef.current && hasQuest) {
+          juice.enqueue({
+            type: 'daily_quest_ready',
+            dedupeKey: 'daily-quest-ready',
+          })
+        }
+        prevDailyQuestPendingRef.current = hasQuest
+        setPendingRewards(data)
       }
     } catch {
       setPendingRewards([])
     }
-  }, [])
+  }, [juice])
 
   const fetchMissions = useCallback(
     async (date?: string) => {
@@ -196,6 +220,7 @@ export default function DashboardPage() {
 
   const claimReward = useCallback(
     async (rewardId: string) => {
+      juice.playUiClick()
       setClaimingId(rewardId)
       try {
         const res = await fetch('/api/rewards/claim', {
@@ -209,6 +234,7 @@ export default function DashboardPage() {
           setUserStats(data.user)
           if (data.gold > 0) {
             setGoldGain(data.gold)
+            juice.playGoldGain(data.gold)
             setTimeout(() => setGoldGain(null), 2200)
           }
         }
@@ -223,7 +249,11 @@ export default function DashboardPage() {
           ) {
             setPendingThemeUnlockAfterClaim(data.themeUnlock.themeId)
           } else if (!onboarding?.active) {
-            setThemeUnlockId(data.themeUnlock.themeId)
+            juice.enqueue({
+              type: 'theme_unlock',
+              themeId: data.themeUnlock.themeId,
+              dedupeKey: `theme-${data.themeUnlock.themeId}`,
+            })
           }
           void refreshTheme()
         } else if (
@@ -269,6 +299,7 @@ export default function DashboardPage() {
       onboarding,
       setUnlockedThemeIds,
       refreshTheme,
+      juice,
     ]
   )
 
@@ -292,6 +323,10 @@ export default function DashboardPage() {
 
   const handleThemeUnlockClose = useCallback(() => {
     setThemeUnlockId(null)
+    if (themeUnlockFromQueueRef.current) {
+      themeUnlockFromQueueRef.current = false
+      juice.notifyThemeUnlockClosed()
+    }
     if (
       onboarding?.currentStep?.id === 'claim-level-modal' &&
       pendingOnboardingClaim.current === 'level-reward-claimed'
@@ -299,7 +334,7 @@ export default function DashboardPage() {
       pendingOnboardingClaim.current = null
       onboarding.signal('level-reward-claimed')
     }
-  }, [onboarding])
+  }, [onboarding, juice])
 
   const handleThemeTryNow = useCallback(
     async (id: string) => {
@@ -413,12 +448,47 @@ export default function DashboardPage() {
         })
         if (res.ok) {
           const data = await res.json()
+          const cardEl = document
+            .querySelector(`[data-mission-id="${missionId}"]`)
+            ?.getBoundingClientRect()
+          juice.playMissionComplete(data.effectiveXp ?? 0, cardEl)
+
           if (data.user) {
             setUserStats(data.user)
           }
+          const celebrationEvents: CelebrationEvent[] = []
+          if (data.newLevelRewards > 0 && data.user?.level) {
+            celebrationEvents.push({
+              type: 'level_up_banner',
+              level: data.user.level,
+              dedupeKey: `level-${data.user.level}`,
+            })
+          }
+          if (data.newAchievements?.length) {
+            celebrationEvents.push(
+              ...buildAchievementUnlockEvents(data.newAchievements)
+            )
+          }
           if (data.themeUnlock?.themeId && !onboarding?.active) {
-            setThemeUnlockId(data.themeUnlock.themeId)
-            void refreshTheme()
+            celebrationEvents.push({
+              type: 'theme_unlock',
+              themeId: data.themeUnlock.themeId,
+              dedupeKey: `theme-${data.themeUnlock.themeId}`,
+            })
+          }
+          if (!onboarding?.active && data.effectiveXp > 0 && data.id) {
+            const adData = {
+              missionId: data.id as string,
+              bonusXp: data.effectiveXp as number,
+            }
+            celebrationEvents.push({
+              type: 'idle_callback',
+              callback: () => setAdPrompt(adData),
+              dedupeKey: `ad-${data.id}`,
+            })
+          }
+          if (celebrationEvents.length > 0) {
+            juice.enqueueMany(celebrationEvents)
           }
           if (data.unlockedThemeIds?.length) {
             setUnlockedThemeIds([
@@ -429,6 +499,7 @@ export default function DashboardPage() {
             setStreakBonusPercent(data.bonusPercent)
           }
           if (data.effectiveXp != null && data.bonusPercent > 0) {
+            juice.playStreakBonus()
             setXpBoostToast(
               tMissions('xpWithBonus', {
                 xp: data.effectiveXp,
@@ -436,12 +507,6 @@ export default function DashboardPage() {
               })
             )
             setTimeout(() => setXpBoostToast(null), 2200)
-          }
-          if (!onboarding?.active && data.effectiveXp > 0 && data.id) {
-            setAdPrompt({
-              missionId: data.id,
-              bonusXp: data.effectiveXp,
-            })
           }
           if (onboarding?.tutorialMissionId === missionId) {
             onboarding.signal('tutorial-completed')
@@ -469,7 +534,7 @@ export default function DashboardPage() {
       tMissions,
       unlockedThemeIds,
       setUnlockedThemeIds,
-      refreshTheme,
+      juice,
     ]
   )
 
@@ -648,6 +713,19 @@ export default function DashboardPage() {
   }, [onboarding?.active, onboarding?.currentStep?.id])
 
   useEffect(() => {
+    juice.setOnboardingActive(onboarding?.active ?? false)
+  }, [onboarding?.active, juice])
+
+  useEffect(() => {
+    juice.registerThemeUnlockHandler((themeId) => {
+      themeUnlockFromQueueRef.current = true
+      setThemeUnlockId(themeId)
+      void refreshTheme()
+    })
+    return () => juice.registerThemeUnlockHandler(null)
+  }, [juice, refreshTheme])
+
+  useEffect(() => {
     if (levelsDialogOpen && onboarding?.currentStep?.id === 'claim-level') {
       onboarding.signal('level-modal-opened')
     }
@@ -712,6 +790,15 @@ export default function DashboardPage() {
                 </button>
 
                 <Link
+                  href={`/${locale}/settings`}
+                  className="ascent-player-icon-btn flex h-11 w-11 items-center justify-center rounded-xl transition hover:scale-105 active:scale-95 sm:h-12 sm:w-12"
+                  title={t('settingsButton')}
+                  aria-label={t('settingsButton')}
+                >
+                  <Settings className="ascent-player-icon h-5 w-5 text-amber-200 sm:h-6 sm:w-6" />
+                </Link>
+
+                <Link
                   href={`/${locale}/achievements`}
                   data-onboarding="achievements"
                   className="ascent-player-icon-btn relative flex h-11 w-11 items-center justify-center rounded-xl transition hover:scale-105 active:scale-95 sm:h-12 sm:w-12"
@@ -737,7 +824,8 @@ export default function DashboardPage() {
                     <button
                       type="button"
                       data-onboarding="level"
-                      className="ascent-player-chip relative flex items-center gap-1.5 rounded-xl px-3 py-2 transition active:scale-95 sm:gap-2 sm:px-4"
+                      data-player-bar-target
+                      className="ascent-player-chip relative flex flex-col items-center gap-0.5 rounded-xl px-3 py-2 transition active:scale-95 sm:gap-2 sm:px-4"
                       aria-label={`${t('overview.summary.level')} ${userStats?.level ?? overview.summary.level}`}
                     >
                       {levelPendingCount > 0 && (
@@ -745,10 +833,20 @@ export default function DashboardPage() {
                           {levelPendingCount}
                         </span>
                       )}
-                      <Sparkles className="ascent-player-icon h-4 w-4 text-amber-200 sm:h-5 sm:w-5" />
-                      <span className="ascent-player-stat text-lg font-bold sm:text-xl">
-                        {userStats?.level ?? overview.summary.level}
+                      <span className="flex items-center gap-1.5 sm:gap-2">
+                        <Sparkles className="ascent-player-icon h-4 w-4 text-amber-200 sm:h-5 sm:w-5" />
+                        <span className="ascent-player-stat text-lg font-bold sm:text-xl">
+                          {userStats?.level ?? overview.summary.level}
+                        </span>
                       </span>
+                      {nextLevel && (
+                        <span className="juice-xp-bar h-1 w-full overflow-hidden rounded-full bg-white/15">
+                          <span
+                            className="juice-xp-bar-fill block h-full rounded-full bg-gradient-to-r from-indigo-400 to-purple-400"
+                            style={{ width: `${Math.min(100, xpProgress)}%` }}
+                          />
+                        </span>
+                      )}
                     </button>
                   </DialogTrigger>
                   <DialogContent
@@ -850,7 +948,7 @@ export default function DashboardPage() {
                                   </div>
                                   <Progress
                                     value={xpProgress}
-                                    className="h-2 bg-white/10"
+                                    className="juice-xp-bar h-2 bg-white/10"
                                     aria-label={t('overview.level.progress')}
                                   />
                                   <p className="text-xs text-white/60">
@@ -1152,6 +1250,7 @@ export default function DashboardPage() {
                   return (
                     <div
                       key={mission.id}
+                      data-mission-id={mission.id}
                       data-onboarding={
                         isTutorial
                           ? 'tutorial-mission'
@@ -1209,6 +1308,7 @@ export default function DashboardPage() {
                           }
                           onClick={(e) => {
                             e.stopPropagation()
+                            juice.playUiClick()
                             completeMission(mission.id)
                           }}
                           disabled={completingId === mission.id}
@@ -1345,8 +1445,6 @@ export default function DashboardPage() {
         unlockedThemeIds={unlockedThemeIds}
         onOpen={refreshTheme}
         onThemeSelect={handleThemeSelect}
-        onSignOut={() => signOut({ callbackUrl: `/${locale}` })}
-        signOutLabel={t('profile.actions.signOut')}
       />
       <ThemeUnlockModal
         themeId={themeUnlockId}
@@ -1394,6 +1492,7 @@ export default function DashboardPage() {
         missionId={adPrompt?.missionId ?? null}
         onClose={() => setAdPrompt(null)}
         onRewarded={(bonus) => {
+          juice.playXpBonus(bonus)
           setXpBoostToast(`+${bonus} XP ${tMissions('adBonus')}`)
           setTimeout(() => setXpBoostToast(null), 2200)
           void fetch('/api/user/me')
@@ -1412,7 +1511,8 @@ export default function DashboardPage() {
 
       {xpBoostToast && (
         <div className="animate-in fade-in slide-in-from-bottom-4 pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2">
-          <span className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-emerald-500/40">
+          <span className="flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-orange-500/40">
+            <Flame className="flame-wiggle h-4 w-4" />
             {xpBoostToast}
           </span>
         </div>

@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { useTranslations } from 'next-intl'
 
-import { Check, Lock, LogOut, Wand2, X } from 'lucide-react'
+import { Check, Lock, Wand2, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -31,8 +31,6 @@ interface ThemePickerProps {
   unlockedThemeIds: string[]
   onThemeSelect: (themeId: string) => void | Promise<void>
   onOpen?: () => void | Promise<void>
-  onSignOut?: () => void | Promise<void>
-  signOutLabel?: string
 }
 
 export function ThemePicker({
@@ -42,8 +40,6 @@ export function ThemePicker({
   unlockedThemeIds,
   onThemeSelect,
   onOpen,
-  onSignOut,
-  signOutLabel,
 }: ThemePickerProps) {
   const t = useTranslations('dashboard.themePicker')
   const tThemes = useTranslations('themes')
@@ -171,41 +167,25 @@ export function ThemePicker({
           )}
         </div>
 
-        <div className="flex shrink-0 items-center justify-between gap-2 border-t border-white/10 px-4 py-3">
-          {onSignOut && signOutLabel ? (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={onSignOut}
-              className="border-red-400/30 bg-red-500/10 text-red-100 hover:bg-red-500/20"
-            >
-              <LogOut className="mr-1 h-3.5 w-3.5" />
-              {signOutLabel}
-            </Button>
-          ) : (
-            <span />
-          )}
-          <div className="flex gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => onOpenChange(false)}
-              className="border-white/20 bg-white/10 hover:bg-white/20"
-            >
-              {t('actions.cancel')}
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              onClick={handleSave}
-              disabled={!unlockedSet.has(selectedThemeId)}
-              className="bg-gradient-to-r from-violet-500 to-purple-500 text-white hover:from-violet-600 hover:to-purple-600"
-            >
-              {t('actions.save')}
-            </Button>
-          </div>
+        <div className="flex shrink-0 items-center justify-end gap-2 border-t border-white/10 px-4 py-3">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => onOpenChange(false)}
+            className="border-white/20 bg-white/10 hover:bg-white/20"
+          >
+            {t('actions.cancel')}
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            onClick={handleSave}
+            disabled={!unlockedSet.has(selectedThemeId)}
+            className="bg-gradient-to-r from-violet-500 to-purple-500 text-white hover:from-violet-600 hover:to-purple-600"
+          >
+            {t('actions.save')}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

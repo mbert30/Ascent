@@ -1,3 +1,4 @@
+import { JuiceProvider } from '@/components/juice/JuiceProvider'
 import { OnboardingShell } from '@/components/onboarding/OnboardingShell'
 import { ThemeProvider } from '@/components/themes/ThemeProvider'
 
@@ -11,7 +12,9 @@ export default function DashboardLayout({
 }) {
   return (
     <ThemeProvider>
-      <OnboardingShell>{children}</OnboardingShell>
+      <JuiceProvider>
+        <OnboardingShell>{children}</OnboardingShell>
+      </JuiceProvider>
     </ThemeProvider>
   )
 }

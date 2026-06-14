@@ -7,7 +7,13 @@ import { routing } from './i18n/routing'
 
 const intlMiddleware = createMiddleware(routing)
 
-const PROTECTED_ROUTES = ['/dashboard', '/goals']
+const PROTECTED_ROUTES = [
+  '/dashboard',
+  '/goals',
+  '/settings',
+  '/achievements',
+  '/shop',
+]
 const AUTH_ONLY_ROUTES = ['reset-password']
 const PUBLIC_AUTH_PATHS = ['en', 'fr']
 

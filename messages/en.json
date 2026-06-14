@@ -84,6 +84,7 @@
     "title": "Dashboard",
     "welcome": "Welcome back",
     "themeButton": "Customize theme",
+    "settingsButton": "Settings",
     "tabs": {
       "overview": "Overview",
       "goals": "Goals & Habits",
@@ -775,6 +776,53 @@
       "achievement": "Reach the {achievement} achievement (tier {tier}) to unlock this theme.",
       "achievementAny": "Reach tier {tier} on any achievement (diamond, ruby, emerald…) to unlock this theme.",
       "allThemes": "Unlock all {count} other themes to earn this ultimate theme."
+    }
+  },
+  "juice": {
+    "levelUp": "Level up!",
+    "levelNumber": "Level {level}",
+    "dailyQuestReady": "Daily quest complete — claim your reward!",
+    "shopRedeemTitle": "Reward redeemed!",
+    "shopRedeemCost": "-{cost} gold",
+    "shopRedeemCta": "Nice!",
+    "soundMute": "Mute sounds",
+    "soundUnmute": "Unmute sounds"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize your Ascent experience",
+    "back": "Dashboard",
+    "preferences": {
+      "title": "Preferences",
+      "sound": "Sound effects",
+      "soundDescription": "Play sounds for missions, rewards, and celebrations",
+      "animations": "Animations",
+      "animationsDescription": "Confetti, floating XP, and motion effects"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Change colors and unlock new themes as you progress",
+      "customizeTheme": "Customize theme"
+    },
+    "language": {
+      "title": "Language",
+      "en": "English",
+      "fr": "Français"
+    },
+    "redeem": {
+      "title": "Redeem code",
+      "description": "Enter a promo or access code",
+      "placeholder": "Enter code",
+      "submit": "Redeem",
+      "success": "Code redeemed! All themes and achievements are unlocked.",
+      "invalid": "Invalid code. Please try again.",
+      "unavailable": "Code redemption is not available right now.",
+      "error": "Something went wrong. Please try again."
+    },
+    "account": {
+      "title": "Account",
+      "email": "Email",
+      "signOut": "Sign out"
     }
   }
 }

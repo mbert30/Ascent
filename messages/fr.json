@@ -84,6 +84,7 @@
     "title": "Tableau de bord",
     "welcome": "Bon retour",
     "themeButton": "Personnaliser le thème",
+    "settingsButton": "Paramètres",
     "tabs": {
       "overview": "Vue d'ensemble",
       "goals": "Objectifs & Habitudes",
@@ -775,6 +776,53 @@
       "achievement": "Atteins le succès « {achievement} » (palier {tier}) pour débloquer ce thème.",
       "achievementAny": "Atteins le palier {tier} sur n'importe quel succès (diamant, rubis, émeraude…) pour débloquer ce thème.",
       "allThemes": "Débloque les {count} autres thèmes pour obtenir ce thème ultime."
+    }
+  },
+  "juice": {
+    "levelUp": "Niveau supérieur !",
+    "levelNumber": "Niveau {level}",
+    "dailyQuestReady": "Quête du jour terminée — récupère ta récompense !",
+    "shopRedeemTitle": "Récompense échangée !",
+    "shopRedeemCost": "-{cost} or",
+    "shopRedeemCta": "Super !",
+    "soundMute": "Couper le son",
+    "soundUnmute": "Activer le son"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Personnalise ton expérience Ascent",
+    "back": "Tableau de bord",
+    "preferences": {
+      "title": "Préférences",
+      "sound": "Effets sonores",
+      "soundDescription": "Sons pour les missions, récompenses et célébrations",
+      "animations": "Animations",
+      "animationsDescription": "Confettis, XP flottant et effets de mouvement"
+    },
+    "appearance": {
+      "title": "Apparence",
+      "description": "Change les couleurs et débloque de nouveaux thèmes en progressant",
+      "customizeTheme": "Personnaliser le thème"
+    },
+    "language": {
+      "title": "Langue",
+      "en": "English",
+      "fr": "Français"
+    },
+    "redeem": {
+      "title": "Code promo",
+      "description": "Entre un code promo ou d'accès",
+      "placeholder": "Entrer le code",
+      "submit": "Valider",
+      "success": "Code validé ! Tous les thèmes et succès sont débloqués.",
+      "invalid": "Code invalide. Réessaie.",
+      "unavailable": "La validation de code n'est pas disponible pour le moment.",
+      "error": "Une erreur est survenue. Réessaie."
+    },
+    "account": {
+      "title": "Compte",
+      "email": "E-mail",
+      "signOut": "Se déconnecter"
     }
   }
 }

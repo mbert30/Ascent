@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 
+import { motion } from 'framer-motion'
 import { Coins, Sparkles } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -45,13 +46,19 @@ export function AchievementUnlockModal({
             <DialogHeader>
               <DialogTitle className="flex flex-col items-center gap-3 text-center">
                 <span className="tier-unlock-pop">
-                  <AchievementIcon
-                    icon={data.icon}
-                    frame={data.frame}
-                    size="lg"
-                    pulse
-                    progress={100}
-                  />
+                  <motion.div
+                    initial={{ scale: 0.4, rotate: -12 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 14 }}
+                  >
+                    <AchievementIcon
+                      icon={data.icon}
+                      frame={data.frame}
+                      size="lg"
+                      pulse
+                      progress={100}
+                    />
+                  </motion.div>
                 </span>
                 <span className="text-lg">{t('unlockTitle')}</span>
                 <span className="text-2xl font-bold text-amber-200">

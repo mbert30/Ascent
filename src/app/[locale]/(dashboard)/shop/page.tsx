@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 
 import { SponsoredCard } from '@/components/ads/SponsoredCard'
+import { useJuice } from '@/components/juice/useJuice'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { useOnboardingOptional } from '@/components/onboarding/OnboardingProvider'
 import { Badge } from '@/components/ui/badge'
@@ -69,6 +70,7 @@ export default function ShopPage() {
   const [message, setMessage] = useState<string | null>(null)
 
   const onboarding = useOnboardingOptional()
+  const juice = useJuice()
 
   const loadRewardsData = async () => {
     await fetch('/api/rewards')
@@ -108,6 +110,16 @@ export default function ShopPage() {
         return
       }
       setBalance(data.balance ?? balance ?? 0)
+      juice.playGoldGain(reward.cost)
+      juice.enqueue({
+        type: 'shop_redeem',
+        data: {
+          title: t(reward.titleKey),
+          icon: null,
+          cost: reward.cost,
+        },
+        dedupeKey: `freeze-${Date.now()}`,
+      })
       setMessage(t('streakFreeze.purchaseSuccess'))
     } finally {
       setRedeeming(null)
@@ -122,6 +134,7 @@ export default function ShopPage() {
     titleKey?: string
     rewardId?: string
   }) => {
+    juice.playUiClick()
     setRedeeming(reward.id)
     setMessage(null)
     try {
@@ -145,11 +158,17 @@ export default function ShopPage() {
         return
       }
       setBalance(data.balance ?? balance ?? 0)
-      setMessage(
-        t('redeemSuccess', {
-          title: reward.titleKey ? t(reward.titleKey) : reward.title,
-        })
-      )
+      const displayTitle = reward.titleKey ? t(reward.titleKey) : reward.title
+      juice.playGoldGain(reward.cost)
+      juice.enqueue({
+        type: 'shop_redeem',
+        data: {
+          title: displayTitle,
+          icon: reward.icon,
+          cost: reward.cost,
+        },
+        dedupeKey: `shop-${reward.id}-${Date.now()}`,
+      })
       await loadRewardsData()
     } finally {
       setRedeeming(null)
