@@ -825,6 +825,7 @@
       "signOut": "Sign out"
     },
     "premium": {
+      "sectionTitle": "Go premium",
       "badge": "One-time offer",
       "title": "Go ad-free",
       "price": "€5.00",

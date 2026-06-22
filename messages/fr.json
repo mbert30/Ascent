@@ -825,6 +825,7 @@
       "signOut": "Se déconnecter"
     },
     "premium": {
+      "sectionTitle": "Passer premium",
       "badge": "Offre unique",
       "title": "Passer sans publicité",
       "price": "5,00 €",
