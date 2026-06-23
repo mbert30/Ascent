@@ -174,7 +174,7 @@ export function MissionModal({
 
   useEffect(() => {
     if (!open) return
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setError(null)
     setEditingDue(false)
     if (mission) {

@@ -2,18 +2,22 @@
 
 import { useEffect, useMemo, useState } from 'react'
 
+import { useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 
 import {
   ArrowLeft,
+  CheckCircle,
   Coins,
   Pencil,
   Plus,
   Save,
   ShoppingBag,
+  Sparkles,
   Trash2,
   X,
+  Zap,
 } from 'lucide-react'
 
 import { SponsoredCard } from '@/components/ads/SponsoredCard'
@@ -270,6 +274,31 @@ export default function ShopPage() {
       await loadRewardsData()
     } finally {
       setDeletingId(null)
+    }
+  }
+
+  const { data: session } = useSession()
+  const isPremium = (session?.user as { isPremium?: boolean })?.isPremium
+  const [premiumLoading, setPremiumLoading] = useState(false)
+  const [premiumError, setPremiumError] = useState<string | null>(null)
+
+  const handleCheckout = async () => {
+    setPremiumLoading(true)
+    setPremiumError(null)
+    try {
+      const res = await fetch('/api/stripe/create-checkout-session', {
+        method: 'POST',
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setPremiumError(t('premium.error'))
+        return
+      }
+      window.location.href = data.url
+    } catch {
+      setPremiumError(t('premium.error'))
+    } finally {
+      setPremiumLoading(false)
     }
   }
 
@@ -633,6 +662,73 @@ export default function ShopPage() {
               </Card>
             ))}
           </div>
+        </section>
+
+        <section className="space-y-4">
+          <h2 className="text-lg font-semibold text-white">
+            {t('premium.sectionTitle')}
+          </h2>
+          {isPremium ? (
+            <Card className="border-amber-400/30 bg-amber-400/10">
+              <CardContent className="flex items-center gap-4 py-5">
+                <CheckCircle className="h-8 w-8 shrink-0 text-amber-400" />
+                <div>
+                  <p className="font-semibold text-white">
+                    {t('premium.alreadyPremium')}
+                  </p>
+                  <p className="text-sm text-white/60">
+                    {t('premium.alreadyPremiumDesc')}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="border-white/10 bg-white/[0.04] backdrop-blur-xl">
+              <CardContent className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+                <div className="space-y-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-300">
+                    <Sparkles className="h-3 w-3" />
+                    {t('premium.badge')}
+                  </span>
+                  <h3 className="text-lg font-bold text-white">
+                    {t('premium.title')}
+                  </h3>
+                  <p className="text-sm text-white/60">
+                    {t('premium.description')}
+                  </p>
+                  <ul className="space-y-1">
+                    {(t.raw('premium.perks') as string[]).map((perk, i) => (
+                      <li
+                        key={i}
+                        className="flex items-center gap-2 text-sm text-white/80"
+                      >
+                        <Zap className="h-3.5 w-3.5 shrink-0 text-amber-400" />
+                        {perk}
+                      </li>
+                    ))}
+                  </ul>
+                  {premiumError && (
+                    <p className="text-sm text-red-400">{premiumError}</p>
+                  )}
+                </div>
+                <div className="flex flex-col items-center gap-2 sm:shrink-0">
+                  <span className="text-3xl font-bold text-white">
+                    {t('premium.price')}
+                  </span>
+                  <span className="text-xs text-white/50">
+                    {t('premium.priceLabel')}
+                  </span>
+                  <button
+                    onClick={handleCheckout}
+                    disabled={premiumLoading}
+                    className="mt-2 cursor-pointer rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {premiumLoading ? t('premium.loading') : t('premium.cta')}
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </section>
 
         <section className="space-y-3">

@@ -648,7 +648,6 @@ export default function DashboardPage() {
   }, [locale, todayStr, fetchMissions, fetchPendingRewards])
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchMissions(selectedDate)
   }, [selectedDate, fetchMissions])
 

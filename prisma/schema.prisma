@@ -25,6 +25,10 @@ model User {
   currency      Int       @default(0)      // "Gold" à dépenser
   themeId       String    @default("dark") // Thème actif
   
+  // --- PREMIUM ---
+  isPremium         Boolean   @default(false)
+  stripeCustomerId  String?   @unique
+
   // --- SOCIAL & V2 (Futur) ---
   bio           String?
   streakFreeze  Int       @default(0)      // Jokers pour sauver une série (Payant/Rare)
