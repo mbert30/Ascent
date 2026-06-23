@@ -415,6 +415,24 @@
     }
   },
   "shop": {
+    "premium": {
+      "sectionTitle": "Passer premium",
+      "badge": "Offre unique",
+      "title": "Passer sans publicité",
+      "price": "5,00 €",
+      "priceLabel": "paiement unique",
+      "description": "Profitez d'Ascent sans interruption publicitaire, pour toujours.",
+      "perks": [
+        "Aucune publicité sur toutes les pages",
+        "Accès anticipé aux nouvelles fonctionnalités",
+        "Badge exclusif sur votre profil"
+      ],
+      "cta": "Acheter maintenant",
+      "loading": "Redirection...",
+      "alreadyPremium": "Vous êtes déjà premium !",
+      "alreadyPremiumDesc": "Merci pour votre soutien. Profitez d'Ascent sans publicité.",
+      "error": "Une erreur est survenue. Veuillez réessayer."
+    },
     "title": "Boutique",
     "subtitle": "Dépense ton or dans des récompenses qui te motivent. Voici des idées pour t'inspirer.",
     "balance": "Ton solde",
@@ -823,24 +841,6 @@
       "title": "Compte",
       "email": "E-mail",
       "signOut": "Se déconnecter"
-    },
-    "premium": {
-      "sectionTitle": "Passer premium",
-      "badge": "Offre unique",
-      "title": "Passer sans publicité",
-      "price": "5,00 €",
-      "priceLabel": "paiement unique",
-      "description": "Profitez d'Ascent sans interruption publicitaire, pour toujours.",
-      "perks": [
-        "Aucune publicité sur toutes les pages",
-        "Accès anticipé aux nouvelles fonctionnalités",
-        "Badge exclusif sur votre profil"
-      ],
-      "cta": "Acheter maintenant",
-      "loading": "Redirection...",
-      "alreadyPremium": "Vous êtes déjà premium !",
-      "alreadyPremiumDesc": "Merci pour votre soutien. Profitez d'Ascent sans publicité.",
-      "error": "Une erreur est survenue. Veuillez réessayer."
     }
   }
 }
