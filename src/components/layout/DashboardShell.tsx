@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 
+import { AdBanner } from '@/components/ads/AdBanner'
+
 import { cn } from '@/lib/utils'
 
 type DashboardShellProps = {
@@ -30,6 +32,7 @@ export function DashboardShell({
         />
       </div>
 
+      <AdBanner />
       <div className={cn('relative z-10 p-4 md:p-6 lg:p-8', contentClassName)}>
         {children}
       </div>
