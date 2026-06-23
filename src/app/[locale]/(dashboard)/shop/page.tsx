@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react'
 
-import { useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 
@@ -72,6 +71,9 @@ export default function ShopPage() {
   const [savingEdit, setSavingEdit] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
+  const [isPremium, setIsPremium] = useState(false)
+  const [premiumLoading, setPremiumLoading] = useState(false)
+  const [premiumError, setPremiumError] = useState<string | null>(null)
 
   const onboarding = useOnboardingOptional()
   const juice = useJuice()
@@ -91,6 +93,12 @@ export default function ShopPage() {
 
   useEffect(() => {
     loadRewardsData()
+    fetch('/api/user/me')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) setIsPremium(data.isPremium ?? false)
+      })
+      .catch(() => {})
   }, [])
 
   const handleStreakFreezePurchase = async (reward: {
@@ -276,11 +284,6 @@ export default function ShopPage() {
       setDeletingId(null)
     }
   }
-
-  const { data: session } = useSession()
-  const isPremium = (session?.user as { isPremium?: boolean })?.isPremium
-  const [premiumLoading, setPremiumLoading] = useState(false)
-  const [premiumError, setPremiumError] = useState<string | null>(null)
 
   const handleCheckout = async () => {
     setPremiumLoading(true)

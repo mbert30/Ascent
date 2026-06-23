@@ -19,6 +19,7 @@ export async function GET() {
         xp: true,
         currency: true,
         onboardingCompletedAt: true,
+        isPremium: true,
       },
     })
     if (!user) {
@@ -35,6 +36,7 @@ export async function GET() {
       xp: user.xp,
       currency: user.currency,
       onboardingCompleted: user.onboardingCompletedAt != null,
+      isPremium: user.isPremium,
     })
   } catch (error) {
     console.error('User me GET error:', error)
