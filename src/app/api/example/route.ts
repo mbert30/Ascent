@@ -1,8 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
-import { prisma } from '@/lib/prisma'
-
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     return NextResponse.json({
       message: 'API route is working',
@@ -16,10 +14,8 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
-    const body = await request.json()
-
     return NextResponse.json(
       { message: 'Created successfully' },
       { status: 201 }

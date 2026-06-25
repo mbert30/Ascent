@@ -145,7 +145,7 @@ export default function ResetPasswordPage() {
                 type="button"
                 variant="ghost"
                 className="w-full cursor-pointer"
-                onClick={() => router.push(`/${locale}`)}
+                onClick={() => router.push(`/${locale}/login`)}
               >
                 {t('auth.resetPassword.backToLogin')}
               </Button>
@@ -197,7 +197,7 @@ export default function ResetPasswordPage() {
               type="button"
               variant="ghost"
               className="w-full cursor-pointer"
-              onClick={() => router.push(`/${locale}`)}
+              onClick={() => router.push(`/${locale}/login`)}
               disabled={isLoading}
             >
               {t('auth.resetPassword.backToLogin')}
@@ -226,7 +226,7 @@ export default function ResetPasswordPage() {
               type="button"
               className="w-full cursor-pointer"
               size="lg"
-              onClick={() => router.push(`/${locale}`)}
+              onClick={() => router.push(`/${locale}/login`)}
             >
               {t('auth.resetPassword.backToLogin')}
             </Button>
@@ -291,7 +291,7 @@ export default function ResetPasswordPage() {
             type="button"
             variant="ghost"
             className="w-full cursor-pointer"
-            onClick={() => router.push(`/${locale}`)}
+            onClick={() => router.push(`/${locale}/login`)}
             disabled={isLoading}
           >
             {t('auth.resetPassword.backToLogin')}

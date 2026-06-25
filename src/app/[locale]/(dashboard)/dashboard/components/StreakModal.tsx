@@ -90,7 +90,10 @@ export function StreakModal({
   useEffect(() => {
     if (!open) return
 
-    void loadStreak()
+    const timer = setTimeout(() => {
+      void loadStreak()
+    }, 0)
+    return () => clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, viewDate])
 

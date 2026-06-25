@@ -1,4 +1,127 @@
 {
+  "landing": {
+    "header": {
+      "login": "Log in",
+      "getStarted": "Get started"
+    },
+    "hero": {
+      "title": "Level Up Your Life",
+      "subtitle": "Turn self-improvement into a measurable, gamified experience.",
+      "description": "Track goals, build habits, earn XP, and climb your way to real rewards.",
+      "cta": "Start climbing",
+      "ctaSecondary": "Log in",
+      "scrollHint": "See how it works"
+    },
+    "features": {
+      "title": "Everything you need to keep climbing",
+      "description": "Ascent turns daily habits into a game you actually want to play, with real progress you can see and rewards you choose yourself.",
+      "setGoals": {
+        "title": "Set Goals",
+        "description": "Create missions across fitness, learning, productivity, and more."
+      },
+      "earnXP": {
+        "title": "Earn XP",
+        "description": "Complete tasks, level up, and watch your momentum build day by day."
+      },
+      "trackStreaks": {
+        "title": "Track Streaks",
+        "description": "Build consistency with streak counters, bonuses, and streak shields."
+      },
+      "visualize": {
+        "title": "Unlock Rewards",
+        "description": "Spend gold on personal rewards, achievements, and unlockable themes."
+      }
+    },
+    "footer": {
+      "tagline": "Your climb starts with a single mission. Free to start.",
+      "cta": "Start climbing for free",
+      "copyright": "© Ascent"
+    },
+    "loop": {
+      "title": "How Ascent works",
+      "description": "Three steps, every day. Small wins compound into real momentum.",
+      "missions": {
+        "title": "Complete missions",
+        "description": "Check off habits and goals, from a 30-min workout to reading 20 pages."
+      },
+      "progress": {
+        "title": "Earn XP & streaks",
+        "description": "Every mission adds XP. Keep showing up to build streaks and unlock bonuses."
+      },
+      "rewards": {
+        "title": "Claim real rewards",
+        "description": "Spend gold on treats you define: a coffee, a night out, gear you've been eyeing."
+      }
+    },
+    "rewards": {
+      "title": "Rewards you actually want",
+      "description": "Gold is not cosmetic. Spend it on things that motivate you, and earn more by showing up.",
+      "dailyQuest": {
+        "title": "Daily quest",
+        "description": "Complete 3 missions in one day to unlock a bonus payout.",
+        "bonus": "3/3 missions = bonus XP + gold"
+      },
+      "streak": {
+        "title": "Streak bonuses",
+        "description": "Each full week of streak adds 10% bonus XP on missions. Streak shields protect you if you miss a day."
+      },
+      "shop": {
+        "title": "Your gold, your rules",
+        "description": "Create personal rewards in the shop and redeem them when you hit your goal."
+      }
+    },
+    "preview": {
+      "title": "Built for daily momentum",
+      "description": "A focused dashboard that puts today's missions front and center.",
+      "level": "Level 7",
+      "today": "Today",
+      "missionDone": "30 min workout",
+      "missionTodo": "Read 20 minutes",
+      "dailyQuest": "Daily quest: 2/3 missions",
+      "dailyQuestAlmost": "Daily quest: 3/3 ready to claim!"
+    },
+    "achievements": {
+      "title": "15 challenges, 4 tiers each",
+      "description": "Unlock achievements as you play. Bronze to gem tiers with real gold rewards waiting to be claimed.",
+      "footnote": "Streak Master, Mission Hunter, Rising Star, and 12 more.",
+      "tiers": {
+        "bronze": "First milestones",
+        "gold": "Serious momentum",
+        "diamond": "Rare dedication",
+        "ruby": "Elite consistency"
+      }
+    },
+    "pricing": {
+      "title": "Start free, upgrade when you want",
+      "description": "The full Ascent loop is free. Go premium once if you want zero ads.",
+      "free": {
+        "label": "Free",
+        "price": "€0",
+        "perk1": "Missions, XP, streaks, and gold",
+        "perk2": "Shop, achievements, and themes",
+        "perk3": "Daily quests and level rewards",
+        "cta": "Create free account"
+      },
+      "premium": {
+        "label": "Premium",
+        "badge": "One time",
+        "price": "€5.00",
+        "priceNote": "forever",
+        "perk1": "No ads on any page",
+        "perk2": "Early access to new features",
+        "perk3": "Exclusive badge on your profile",
+        "cta": "Get started"
+      }
+    },
+    "stickyCta": {
+      "hint": "Free to start. Your climb begins now.",
+      "cta": "Start climbing"
+    },
+    "meta": {
+      "title": "Ascent - Level Up Your Life",
+      "description": "Turn self-improvement into a measurable, gamified experience. Track goals, build habits, earn XP, and claim real rewards."
+    }
+  },
   "auth": {
     "welcome": "Welcome to Ascent",
     "subtitle": "Start your journey of continuous improvement",

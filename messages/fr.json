@@ -1,4 +1,127 @@
 {
+  "landing": {
+    "header": {
+      "login": "Se connecter",
+      "getStarted": "Commencer"
+    },
+    "hero": {
+      "title": "Level Up Your Life",
+      "subtitle": "Transformez votre développement personnel en une expérience mesurable et gamifiée.",
+      "description": "Suivez vos objectifs, créez des habitudes, gagnez de l'XP et débloquez de vraies récompenses.",
+      "cta": "Commencer l'ascension",
+      "ctaSecondary": "Se connecter",
+      "scrollHint": "Découvrir comment ça marche"
+    },
+    "features": {
+      "title": "Tout ce qu'il faut pour continuer à grimper",
+      "description": "Ascent transforme vos habitudes quotidiennes en un jeu dont vous avez envie, avec une progression visible et des récompenses que vous choisissez.",
+      "setGoals": {
+        "title": "Définir des objectifs",
+        "description": "Créez des missions dans le fitness, l'apprentissage, la productivité et plus encore."
+      },
+      "earnXP": {
+        "title": "Gagner des XP",
+        "description": "Terminez des tâches, montez de niveau et voyez votre élan grandir jour après jour."
+      },
+      "trackStreaks": {
+        "title": "Suivre les séries",
+        "description": "Développez la régularité avec des compteurs de séries, des bonus et des boucliers."
+      },
+      "visualize": {
+        "title": "Débloquer des récompenses",
+        "description": "Dépensez votre or sur des récompenses personnelles, des succès et des thèmes à débloquer."
+      }
+    },
+    "footer": {
+      "tagline": "Votre ascension commence par une seule mission. Gratuit pour commencer.",
+      "cta": "Commencer gratuitement",
+      "copyright": "© Ascent"
+    },
+    "loop": {
+      "title": "Comment Ascent fonctionne",
+      "description": "Trois étapes, chaque jour. Les petites victoires créent un vrai élan.",
+      "missions": {
+        "title": "Complétez des missions",
+        "description": "Cochez habitudes et objectifs, d'une séance de 30 min à 20 pages de lecture."
+      },
+      "progress": {
+        "title": "Gagnez XP et séries",
+        "description": "Chaque mission rapporte de l'XP. Restez régulier pour construire des séries et des bonus."
+      },
+      "rewards": {
+        "title": "Réclamez de vraies récompenses",
+        "description": "Dépensez votre or sur des cadeaux que vous définissez : un café, une sortie, un achat tant attendu."
+      }
+    },
+    "rewards": {
+      "title": "Des récompenses qui vous motivent",
+      "description": "L'or n'est pas cosmétique. Dépensez-le sur ce qui compte pour vous, et gagnez-en en restant régulier.",
+      "dailyQuest": {
+        "title": "Quête du jour",
+        "description": "Complétez 3 missions en une journée pour débloquer un bonus.",
+        "bonus": "3/3 missions = bonus XP + or"
+      },
+      "streak": {
+        "title": "Bonus de série",
+        "description": "Chaque semaine complète de série ajoute 10 % de bonus XP sur les missions. Les boucliers protègent votre série si vous ratez un jour."
+      },
+      "shop": {
+        "title": "Votre or, vos règles",
+        "description": "Créez des récompenses personnelles dans la boutique et échangez-les quand vous atteignez votre objectif."
+      }
+    },
+    "preview": {
+      "title": "Pensé pour l'élan quotidien",
+      "description": "Un tableau de bord focalisé qui met les missions du jour au premier plan.",
+      "level": "Niveau 7",
+      "today": "Aujourd'hui",
+      "missionDone": "Séance de 30 min",
+      "missionTodo": "Lire 20 minutes",
+      "dailyQuest": "Quête du jour : 2/3 missions",
+      "dailyQuestAlmost": "Quête du jour : 3/3, bonus à récupérer !"
+    },
+    "achievements": {
+      "title": "15 défis, 4 paliers chacun",
+      "description": "Débloquez des succès en jouant. Du bronze aux gemmes, avec de l'or à récupérer à chaque palier.",
+      "footnote": "Maître des séries, Chasseur de missions, Étoile montante, et 12 autres.",
+      "tiers": {
+        "bronze": "Premiers jalons",
+        "gold": "Élan sérieux",
+        "diamond": "Dévouement rare",
+        "ruby": "Régularité d'élite"
+      }
+    },
+    "pricing": {
+      "title": "Commencez gratuitement, premium si vous voulez",
+      "description": "La boucle Ascent complète est gratuite. Passez premium une fois pour zéro pub.",
+      "free": {
+        "label": "Gratuit",
+        "price": "0 €",
+        "perk1": "Missions, XP, séries et or",
+        "perk2": "Boutique, succès et thèmes",
+        "perk3": "Quêtes du jour et récompenses de niveau",
+        "cta": "Créer un compte gratuit"
+      },
+      "premium": {
+        "label": "Premium",
+        "badge": "Paiement unique",
+        "price": "5,00 €",
+        "priceNote": "à vie",
+        "perk1": "Aucune pub sur l'application",
+        "perk2": "Accès anticipé aux nouveautés",
+        "perk3": "Badge exclusif sur votre profil",
+        "cta": "Commencer"
+      }
+    },
+    "stickyCta": {
+      "hint": "Gratuit pour commencer. Votre ascension commence ici.",
+      "cta": "Commencer l'ascension"
+    },
+    "meta": {
+      "title": "Ascent - Level Up Your Life",
+      "description": "Transformez votre développement personnel en une expérience mesurable et gamifiée. Objectifs, habitudes, XP et vraies récompenses."
+    }
+  },
   "auth": {
     "welcome": "Bienvenue sur Ascent",
     "subtitle": "Commencez votre parcours d'amélioration continue",

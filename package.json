@@ -15,6 +15,10 @@
     "db:seed:cleanup": "ts-node prisma/seed/cleanup.ts",
     "demo:cheat": "ts-node prisma/seed/cheats.ts",
     "demo:cheat:boost": "ts-node prisma/seed/cheats.ts --all-demo --add-levels 10 --add-gold 1000 --add-xp 2500",
+    "screenshots": "node scripts/visual/capture.mjs",
+    "screenshots:wait": "node scripts/visual/capture.mjs --wait",
+    "screenshots:serve": "node scripts/visual/capture.mjs --serve",
+    "playwright:install": "playwright install chromium",
     "prepare": "husky install",
     "postinstall": "prisma generate"
   },
@@ -62,6 +66,7 @@
     "eslint-config-prettier": "^10.1.8",
     "husky": "^8.0.0",
     "lint-staged": "^16.2.7",
+    "playwright": "^1.52.0",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
     "prisma": "^5.7.1",

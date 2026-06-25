@@ -167,7 +167,51 @@
   transition: transform 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
 }
 
+/* Marketing landing: fog spotlight + drifting gradient */
+.marketing-fog-spotlight {
+  background: rgb(2 6 23 / 0.9);
+  -webkit-mask-image: radial-gradient(
+    circle var(--spot-size, 320px) at var(--spot-x, 50%) var(--spot-y, 50%),
+    transparent 0%,
+    transparent 28%,
+    rgb(0 0 0 / 0.25) 48%,
+    black 72%
+  );
+  mask-image: radial-gradient(
+    circle var(--spot-size, 320px) at var(--spot-x, 50%) var(--spot-y, 50%),
+    transparent 0%,
+    transparent 28%,
+    rgb(0 0 0 / 0.25) 48%,
+    black 72%
+  );
+}
+
+@keyframes marketing-gradient-drift {
+  0% {
+    transform: rotate(0deg) scale(1.05);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.12);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.05);
+  }
+}
+
+.marketing-gradient-drift {
+  animation: marketing-gradient-drift 28s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .marketing-gradient-drift {
+    animation: none;
+  }
+
+  .marketing-fog-spotlight {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
   .mission-just-completed,
   .gold-just-updated,
   .reward-pop-badge,

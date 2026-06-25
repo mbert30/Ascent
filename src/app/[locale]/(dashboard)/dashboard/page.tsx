@@ -648,7 +648,10 @@ export default function DashboardPage() {
   }, [locale, todayStr, fetchMissions, fetchPendingRewards])
 
   useEffect(() => {
-    fetchMissions(selectedDate)
+    const timer = setTimeout(() => {
+      fetchMissions(selectedDate)
+    }, 0)
+    return () => clearTimeout(timer)
   }, [selectedDate, fetchMissions])
 
   useEffect(() => {

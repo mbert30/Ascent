@@ -175,30 +175,34 @@ export function MissionModal({
   useEffect(() => {
     if (!open) return
 
-    setError(null)
-    setEditingDue(false)
-    if (mission) {
-      setTitle(mission.title)
-      setCategory(mission.category)
-      setType(mission.type)
-      setXp(mission.xp)
-      setDifficulty(
-        mission.xp >= 60 ? 'hard' : mission.xp >= 35 ? 'medium' : 'easy'
-      )
-      setDueDateTime(toDateTimeLocal(mission.dueAt))
-      setRepeat('NONE')
-    } else {
-      const now = new Date()
-      now.setMinutes(0)
-      now.setHours(now.getHours() + 1)
-      setTitle('')
-      setCategory(CATEGORIES[0])
-      setType('HABIT')
-      setXp(20)
-      setDifficulty('easy')
-      setDueDateTime(toDateTimeLocal(now.toISOString()))
-      setRepeat('NONE')
-    }
+    const timer = setTimeout(() => {
+      setError(null)
+      setEditingDue(false)
+      if (mission) {
+        setTitle(mission.title)
+        setCategory(mission.category)
+        setType(mission.type)
+        setXp(mission.xp)
+        setDifficulty(
+          mission.xp >= 60 ? 'hard' : mission.xp >= 35 ? 'medium' : 'easy'
+        )
+        setDueDateTime(toDateTimeLocal(mission.dueAt))
+        setRepeat('NONE')
+      } else {
+        const now = new Date()
+        now.setMinutes(0)
+        now.setHours(now.getHours() + 1)
+        setTitle('')
+        setCategory(CATEGORIES[0])
+        setType('HABIT')
+        setXp(20)
+        setDifficulty('easy')
+        setDueDateTime(toDateTimeLocal(now.toISOString()))
+        setRepeat('NONE')
+      }
+    }, 0)
+
+    return () => clearTimeout(timer)
   }, [open, mission])
 
   const handleSubmit = async (e: React.FormEvent) => {

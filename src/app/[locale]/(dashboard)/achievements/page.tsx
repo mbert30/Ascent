@@ -49,7 +49,10 @@ export default function AchievementsPage() {
   }
 
   useEffect(() => {
-    void load()
+    const timer = setTimeout(() => {
+      void load()
+    }, 0)
+    return () => clearTimeout(timer)
   }, [])
 
   const openDetail = (a: AchievementView) => {
