@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { auth } from '@/lib/auth'
-import { ensureRecurringHabits } from '@/lib/missions/recurrence'
+import {
+  ensureRecurringHabits,
+  ensureRolledOverOneOffs,
+} from '@/lib/missions/recurrence'
 import {
   DAILY_LOGIN_MISSION_CATEGORY,
   DAILY_LOGIN_TITLES,
@@ -60,6 +63,7 @@ export async function POST(request: NextRequest) {
     }
 
     const pending = await ensureDailyLoginReward(prisma, session.user.id)
+    await ensureRolledOverOneOffs(prisma, session.user.id)
     await ensureRecurringHabits(prisma, session.user.id)
 
     return NextResponse.json({

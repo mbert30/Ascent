@@ -14,7 +14,7 @@ type Mission = {
   id: string
   title: string
   type: 'HABIT' | 'GOAL'
-  status: 'SCHEDULED' | 'COMPLETED' | 'OVERDUE'
+  status: 'SCHEDULED' | 'COMPLETED'
   xp: number
 }
 

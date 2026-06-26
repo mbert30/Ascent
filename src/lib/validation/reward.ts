@@ -15,13 +15,3 @@ export const rewardCreateSchema = rewardBaseSchema.extend({
 })
 
 export const rewardUpdateSchema = rewardBaseSchema.partial()
-
-export const userRewardCreateSchema = z.object({
-  userId: cuidSchema,
-  rewardId: cuidSchema,
-  isConsumed: z.boolean().optional(),
-})
-
-export const rewardIdentifierSchema = z.object({
-  rewardId: cuidSchema,
-})

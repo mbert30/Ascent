@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { auth } from '@/lib/auth'
-import { newRepeatKey } from '@/lib/missions/recurrence'
+import {
+  ensureRolledOverOneOffs,
+  newRepeatKey,
+} from '@/lib/missions/recurrence'
 import { prisma } from '@/lib/prisma'
 import { createMissionSchema } from '@/lib/validation/mission'
 
@@ -19,6 +22,12 @@ export async function GET(request: NextRequest) {
       : new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00.000Z')
     const end = new Date(start)
     end.setUTCDate(end.getUTCDate() + 1)
+
+    const todayUtc = new Date().toISOString().slice(0, 10)
+    const requestedDate = dateStr ?? todayUtc
+    if (requestedDate === todayUtc) {
+      await ensureRolledOverOneOffs(prisma, session.user.id)
+    }
 
     const missions = await prisma.mission.findMany({
       where: {

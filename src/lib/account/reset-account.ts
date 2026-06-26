@@ -23,12 +23,7 @@ export async function resetAccount(
     await tx.userAchievement.deleteMany({ where: { userId } })
     await tx.userReward.deleteMany({ where: { userId } })
     await tx.mission.deleteMany({ where: { userId } })
-    await tx.habitLog.deleteMany({ where: { userId } })
-    await tx.habit.deleteMany({ where: { userId } })
-    await tx.userBadge.deleteMany({ where: { userId } })
     await tx.userThemeUnlock.deleteMany({ where: { userId } })
-    await tx.userFollows.deleteMany({ where: { followerId: userId } })
-    await tx.userFollows.deleteMany({ where: { followingId: userId } })
 
     await tx.reward.deleteMany({ where: { creatorId: userId } })
 
@@ -42,7 +37,6 @@ export async function resetAccount(
         streakFreeze: 0,
         frozenStreakDates: [],
         onboardingCompletedAt: null,
-        bio: null,
       },
     })
   })

@@ -58,6 +58,38 @@ async function backfillRepeatKeys(prisma: PrismaClient, userId: string) {
   }
 }
 
+export async function ensureRolledOverOneOffs(
+  prisma: PrismaClient,
+  userId: string
+) {
+  const now = new Date()
+  const todayStart = utcDayStart(now)
+
+  const missed = await prisma.mission.findMany({
+    where: {
+      userId,
+      repeatKey: null,
+      status: 'SCHEDULED',
+      dueAt: { lt: todayStart },
+      category: { notIn: SPECIAL_CATEGORIES },
+    },
+    select: { id: true, dueAt: true },
+  })
+
+  for (const mission of missed) {
+    const rolled = new Date(mission.dueAt)
+    rolled.setUTCFullYear(
+      todayStart.getUTCFullYear(),
+      todayStart.getUTCMonth(),
+      todayStart.getUTCDate()
+    )
+    await prisma.mission.update({
+      where: { id: mission.id },
+      data: { dueAt: rolled },
+    })
+  }
+}
+
 export async function ensureRecurringHabits(
   prisma: PrismaClient,
   userId: string

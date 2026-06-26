@@ -1246,9 +1246,8 @@ export default function DashboardPage() {
                     !isCompleted
                   const isOverdue =
                     !isCompleted &&
-                    (mission.status === 'OVERDUE' ||
-                      (mission.status === 'SCHEDULED' &&
-                        new Date(mission.dueAt) < new Date()))
+                    mission.status === 'SCHEDULED' &&
+                    new Date(mission.dueAt) < new Date()
                   return (
                     <div
                       key={mission.id}

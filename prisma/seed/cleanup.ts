@@ -14,31 +14,17 @@ async function main() {
   }
 
   for (const u of seeds) {
-    // Supprimer données dépendantes dans l'ordre
     await prisma.userReward.deleteMany({ where: { userId: u.id } })
-    await prisma.userBadge.deleteMany({ where: { userId: u.id } })
-    await prisma.habitLog.deleteMany({ where: { userId: u.id } })
-    await prisma.habit.deleteMany({ where: { userId: u.id } })
     await prisma.mission.deleteMany({ where: { userId: u.id } })
-    await prisma.userFollows.deleteMany({ where: { followerId: u.id } })
-    await prisma.userFollows.deleteMany({ where: { followingId: u.id } })
 
     await prisma.user.delete({ where: { id: u.id } })
     console.log(`Supprimé: ${u.email}`)
   }
 
-  // Supprimer les artefacts seed globaux devenus orphelins.
   await prisma.reward.deleteMany({
     where: {
       id: { in: ['seed-reward-focus-music', 'seed-reward-brunch'] },
       usersUnlocked: { none: {} },
-    },
-  })
-
-  await prisma.badge.deleteMany({
-    where: {
-      id: { in: ['seed-badge-first-week'] },
-      users: { none: {} },
     },
   })
 

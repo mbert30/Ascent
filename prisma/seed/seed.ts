@@ -1,6 +1,4 @@
 import {
-  Difficulty,
-  HabitType,
   MissionStatus,
   MissionType,
   Prisma,
@@ -50,15 +48,15 @@ function getMissionStatus(
   // Recent streak window: at least one habit completed each day.
   if (dayOffset >= -5) {
     if (template.type === MissionType.HABIT) return MissionStatus.COMPLETED
-    return dayOffset >= -2 ? MissionStatus.COMPLETED : MissionStatus.OVERDUE
+    return dayOffset >= -2 ? MissionStatus.COMPLETED : MissionStatus.SCHEDULED
   }
 
   // Older days: scattered activity for calendar history.
   const abs = Math.abs(dayOffset)
   const dayHasActivity = abs % 2 === 0 || abs % 3 === 0
-  if (!dayHasActivity) return MissionStatus.OVERDUE
+  if (!dayHasActivity) return MissionStatus.SCHEDULED
   if (template.type === MissionType.HABIT) return MissionStatus.COMPLETED
-  return abs % 4 === 0 ? MissionStatus.COMPLETED : MissionStatus.OVERDUE
+  return abs % 4 === 0 ? MissionStatus.COMPLETED : MissionStatus.SCHEDULED
 }
 
 async function main() {
@@ -69,11 +67,9 @@ async function main() {
       where: { email: SEED_EMAIL },
       create: {
         email: SEED_EMAIL,
-        bio: 'Building consistency one mission at a time.',
         themeId: 'dark',
       },
       update: {
-        bio: 'Building consistency one mission at a time.',
         themeId: 'dark',
       },
     })
@@ -92,99 +88,6 @@ async function main() {
 
     // Keep seed deterministic across reruns.
     await tx.userReward.deleteMany({ where: { userId: user.id } })
-    await tx.userBadge.deleteMany({ where: { userId: user.id } })
-    await tx.habitLog.deleteMany({ where: { userId: user.id } })
-    await tx.habit.deleteMany({ where: { userId: user.id } })
-    const habits = await Promise.all([
-      tx.habit.create({
-        data: {
-          userId: user.id,
-          title: 'Hydration tracker',
-          description: 'Drink at least 2L of water throughout the day.',
-          type: HabitType.DAILY_HABIT,
-          difficulty: Difficulty.EASY,
-          xpReward: 12,
-          goldReward: 4,
-          currentStreak: 6,
-          longestStreak: 11,
-        },
-      }),
-      tx.habit.create({
-        data: {
-          userId: user.id,
-          title: 'Strength workout',
-          description: 'Complete a focused 35-minute training session.',
-          type: HabitType.DAILY_HABIT,
-          difficulty: Difficulty.MEDIUM,
-          xpReward: 28,
-          goldReward: 10,
-          currentStreak: 4,
-          longestStreak: 9,
-        },
-      }),
-      tx.habit.create({
-        data: {
-          userId: user.id,
-          title: 'Read for 20 minutes',
-          description: 'Read non-fiction and capture one key takeaway.',
-          type: HabitType.DAILY_HABIT,
-          difficulty: Difficulty.EASY,
-          xpReward: 16,
-          goldReward: 6,
-          currentStreak: 8,
-          longestStreak: 15,
-        },
-      }),
-    ])
-
-    const habitLogs = [
-      // Recent activity log entries across several days.
-      {
-        habitId: habits[0].id,
-        userId: user.id,
-        xpEarned: 12,
-        goldEarned: 4,
-        completedAt: atHour(6, 8, 20),
-      },
-      {
-        habitId: habits[2].id,
-        userId: user.id,
-        xpEarned: 16,
-        goldEarned: 6,
-        completedAt: atHour(5, 22, 15),
-      },
-      {
-        habitId: habits[1].id,
-        userId: user.id,
-        xpEarned: 28,
-        goldEarned: 10,
-        completedAt: atHour(4, 19, 10),
-      },
-      {
-        habitId: habits[0].id,
-        userId: user.id,
-        xpEarned: 12,
-        goldEarned: 4,
-        completedAt: atHour(3, 8, 5),
-      },
-      {
-        habitId: habits[2].id,
-        userId: user.id,
-        xpEarned: 16,
-        goldEarned: 6,
-        completedAt: atHour(2, 21, 45),
-      },
-      {
-        habitId: habits[1].id,
-        userId: user.id,
-        xpEarned: 28,
-        goldEarned: 10,
-        completedAt: atHour(1, 18, 30),
-      },
-    ]
-
-    await tx.habitLog.createMany({ data: habitLogs })
-
     const missionTemplates = [
       {
         title: 'Routine de mobilite matinale',
@@ -221,11 +124,16 @@ async function main() {
     })
 
     const missionData: Prisma.MissionCreateManyInput[] = []
+    let seedUserCompletedXp = 0
     for (const recipientId of missionRecipientIds) {
       for (let dayOffset = -35; dayOffset <= 6; dayOffset++) {
         for (const template of missionTemplates) {
           const dueAt = atDayOffset(dayOffset, template.hour, 0)
           const status = getMissionStatus(dayOffset, template)
+
+          if (recipientId === user.id && status === MissionStatus.COMPLETED) {
+            seedUserCompletedXp += template.xp
+          }
 
           missionData.push({
             userId: recipientId,
@@ -275,36 +183,14 @@ async function main() {
       },
     })
 
-    const firstMilestoneBadge = await tx.badge.upsert({
-      where: { id: 'seed-badge-first-week' },
-      create: {
-        id: 'seed-badge-first-week',
-        name: 'Seven Day Flow',
-        description: 'Log activity on 7 separate days.',
-        icon: '🔥',
-        condition: 'ACTIVE_7_DAYS',
-      },
-      update: {},
-    })
-
-    await tx.userBadge.create({
-      data: {
-        userId: user.id,
-        badgeId: firstMilestoneBadge.id,
-        unlockedAt: atHour(2, 22, 10),
-      },
-    })
-
-    const totalXp = habitLogs.reduce((sum, log) => sum + log.xpEarned, 0)
-    const totalGold = habitLogs.reduce((sum, log) => sum + log.goldEarned, 0)
     const spentGold = rewards[0].cost
 
     await tx.user.update({
       where: { id: user.id },
       data: {
-        xp: totalXp,
-        level: levelFromXp(totalXp),
-        currency: Math.max(totalGold - spentGold, 0),
+        xp: seedUserCompletedXp,
+        level: levelFromXp(seedUserCompletedXp),
+        currency: Math.max(80 - spentGold, 0),
       },
     })
   })

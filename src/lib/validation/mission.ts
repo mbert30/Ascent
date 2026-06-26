@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const missionTypeEnum = z.enum(['HABIT', 'GOAL'])
-export const missionStatusEnum = z.enum(['SCHEDULED', 'COMPLETED', 'OVERDUE'])
+export const missionStatusEnum = z.enum(['SCHEDULED', 'COMPLETED'])
 export const missionRepeatEnum = z.enum(['NONE', 'DAILY', 'WEEKLY'])
 
 export const createMissionSchema = z.object({
