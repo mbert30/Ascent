@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { AdBanner } from '@/components/ads/AdBanner'
+import { AdBanner, SideAds } from '@/components/ads/AdBanner'
 
 import { cn } from '@/lib/utils'
 
@@ -16,7 +16,12 @@ export function DashboardShell({
   contentClassName,
 }: DashboardShellProps) {
   return (
-    <div className={cn('relative min-h-screen overflow-hidden', className)}>
+    <div
+      className={cn(
+        'relative flex min-h-screen flex-col overflow-hidden',
+        className
+      )}
+    >
       <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute -top-32 -left-24 size-[420px] rounded-full blur-3xl"
@@ -32,15 +37,16 @@ export function DashboardShell({
         />
       </div>
 
-      <AdBanner />
+      <SideAds />
       <div
         className={cn(
-          'relative z-10 p-4 md:p-6 lg:p-8 xl:px-44',
+          'relative z-10 flex-1 p-4 md:p-6 lg:p-8 xl:px-44',
           contentClassName
         )}
       >
         {children}
       </div>
+      <AdBanner />
     </div>
   )
 }

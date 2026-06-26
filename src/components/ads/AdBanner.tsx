@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react'
 
 import Link from 'next/link'
 
-import { X } from 'lucide-react'
-
 function SideAd({ position }: { position: 'left' | 'right' }) {
   return (
     <div
@@ -38,35 +36,27 @@ function SideAd({ position }: { position: 'left' | 'right' }) {
   )
 }
 
-function BottomAd({ onClose }: { onClose: () => void }) {
+function BottomAd() {
   return (
-    <div className="fixed right-0 bottom-0 left-0 z-40 border-t border-white/10 bg-slate-900/95 backdrop-blur-sm xl:hidden">
-      <div className="flex items-center gap-3 px-4 py-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500/40 to-purple-500/40 text-lg">
+    <div className="w-full border-t border-white/10 bg-slate-900/95 xl:hidden">
+      <div className="flex items-center gap-3 px-4 py-2">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500/40 to-purple-500/40 text-base">
           🚀
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-xs font-semibold text-white/80">
             Boostez votre productivité
           </p>
-          <p className="truncate text-[11px] text-white/40">
+          <p className="truncate text-[10px] text-white/40">
             Découvrez nos outils premium
           </p>
         </div>
         <Link
           href="#"
-          className="shrink-0 rounded-lg border border-indigo-400/30 bg-indigo-500/20 px-3 py-1.5 text-[11px] font-medium text-indigo-300 transition-colors hover:bg-indigo-500/30"
+          className="shrink-0 rounded-lg border border-indigo-400/30 bg-indigo-500/20 px-3 py-1 text-[11px] font-medium text-indigo-300 transition-colors hover:bg-indigo-500/30"
         >
           Voir
         </Link>
-        <button
-          type="button"
-          onClick={onClose}
-          className="shrink-0 rounded-lg p-1.5 text-white/30 transition-colors hover:text-white/60"
-          aria-label="Fermer"
-        >
-          <X className="h-4 w-4" />
-        </button>
       </div>
       <p className="pb-1 text-center text-[9px] text-white/20">
         Annonce simulée
@@ -75,9 +65,8 @@ function BottomAd({ onClose }: { onClose: () => void }) {
   )
 }
 
-export function AdBanner() {
+export function SideAds() {
   const [isPremium, setIsPremium] = useState<boolean | null>(null)
-  const [bottomClosed, setBottomClosed] = useState(false)
 
   useEffect(() => {
     fetch('/api/user/me')
@@ -92,7 +81,21 @@ export function AdBanner() {
     <>
       <SideAd position="left" />
       <SideAd position="right" />
-      {!bottomClosed && <BottomAd onClose={() => setBottomClosed(true)} />}
     </>
   )
+}
+
+export function AdBanner() {
+  const [isPremium, setIsPremium] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    fetch('/api/user/me')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setIsPremium(data?.isPremium ?? false))
+      .catch(() => setIsPremium(false))
+  }, [])
+
+  if (isPremium === null || isPremium) return null
+
+  return <BottomAd />
 }
