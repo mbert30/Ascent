@@ -2,59 +2,63 @@
 
 import { useEffect, useState } from 'react'
 
+import Link from 'next/link'
+
 import { X } from 'lucide-react'
 
-declare global {
-  interface Window {
-    adsbygoogle: unknown[]
-  }
-}
-
 function SideAd({ position }: { position: 'left' | 'right' }) {
-  useEffect(() => {
-    try {
-      ;(window.adsbygoogle = window.adsbygoogle || []).push({})
-    } catch {}
-  }, [])
-
   return (
     <div
-      className={`fixed top-1/2 z-40 hidden h-[400px] w-[140px] -translate-y-1/2 xl:block ${position === 'left' ? 'left-2' : 'right-2'}`}
+      className={`fixed top-1/2 z-40 hidden h-[400px] w-[140px] -translate-y-1/2 flex-col items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm xl:flex ${position === 'left' ? 'left-2' : 'right-2'}`}
     >
-      <ins
-        className="adsbygoogle"
-        style={{ display: 'block', width: '140px', height: '400px' }}
-        data-ad-client="ca-pub-4635205784488672"
-        data-ad-slot="2253151441"
-        data-ad-format="auto"
-        data-full-width-responsive="false"
-        data-adtest="on"
-      />
+      <span className="text-[10px] tracking-widest text-white/30 uppercase">
+        Pub
+      </span>
+      <div className="flex flex-col items-center gap-3 px-3 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/40 to-purple-500/40 text-2xl">
+          🚀
+        </div>
+        <p className="text-xs font-semibold text-white/70">
+          Boostez votre productivité
+        </p>
+        <p className="text-[11px] text-white/40">
+          Découvrez nos outils premium
+        </p>
+        <Link
+          href="#"
+          className="mt-1 rounded-lg border border-indigo-400/30 bg-indigo-500/20 px-3 py-1.5 text-[11px] font-medium text-indigo-300 transition-colors hover:bg-indigo-500/30"
+        >
+          En savoir plus
+        </Link>
+      </div>
+      <span className="mt-auto mb-1 text-[9px] text-white/20">
+        Annonce simulée
+      </span>
     </div>
   )
 }
 
 function BottomAd({ onClose }: { onClose: () => void }) {
-  useEffect(() => {
-    try {
-      ;(window.adsbygoogle = window.adsbygoogle || []).push({})
-    } catch {}
-  }, [])
-
   return (
     <div className="fixed right-0 bottom-0 left-0 z-40 border-t border-white/10 bg-slate-900/95 backdrop-blur-sm xl:hidden">
-      <div className="flex items-center gap-2 px-3 py-2">
-        <div className="min-w-0 flex-1 overflow-hidden">
-          <ins
-            className="adsbygoogle"
-            style={{ display: 'block', width: '100%', height: '60px' }}
-            data-ad-client="ca-pub-4635205784488672"
-            data-ad-slot="3238361838"
-            data-ad-format="horizontal"
-            data-full-width-responsive="true"
-            data-adtest="on"
-          />
+      <div className="flex items-center gap-3 px-4 py-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500/40 to-purple-500/40 text-lg">
+          🚀
         </div>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-xs font-semibold text-white/80">
+            Boostez votre productivité
+          </p>
+          <p className="truncate text-[11px] text-white/40">
+            Découvrez nos outils premium
+          </p>
+        </div>
+        <Link
+          href="#"
+          className="shrink-0 rounded-lg border border-indigo-400/30 bg-indigo-500/20 px-3 py-1.5 text-[11px] font-medium text-indigo-300 transition-colors hover:bg-indigo-500/30"
+        >
+          Voir
+        </Link>
         <button
           type="button"
           onClick={onClose}
@@ -64,6 +68,9 @@ function BottomAd({ onClose }: { onClose: () => void }) {
           <X className="h-4 w-4" />
         </button>
       </div>
+      <p className="pb-1 text-center text-[9px] text-white/20">
+        Annonce simulée
+      </p>
     </div>
   )
 }

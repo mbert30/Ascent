@@ -26,14 +26,6 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning className="dark">
-      <head>
-        {}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4635205784488672"
-          crossOrigin="anonymous"
-        />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground min-h-screen antialiased`}
       >
